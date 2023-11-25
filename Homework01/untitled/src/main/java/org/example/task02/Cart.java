@@ -49,32 +49,13 @@ public class Cart<T extends Food> {
      * Балансировка корзины
      */
     public void cardBalancing() {
-        boolean proteins, fats, carbohydrates;
-        int check = 0;
+        AtomicInteger check = new AtomicInteger(0);
+        boolean proteins = getFPC(Food::getProteins, check);
+        boolean fats = getFPC(Food::getFats, check);
+        boolean carbohydrates = getFPC(Food::getCarbohydrates, check);
         String balance = " ";
 
-        if (foodstuffs.stream().noneMatch(Food::getProteins))
-            proteins = foodstuffs.add((T) getFPC(Food::getProteins));
-        else {
-            proteins = true;
-            check++;
-        }
-
-        if (foodstuffs.stream().noneMatch(Food::getFats))
-            fats = foodstuffs.add((T) getFPC(Food::getFats));
-        else {
-            fats = true;
-            check++;
-        }
-
-        if (foodstuffs.stream().noneMatch(Food::getCarbohydrates))
-            carbohydrates = foodstuffs.add((T) getFPC(Food::getCarbohydrates));
-        else {
-            carbohydrates = true;
-            check++;
-        }
-
-        if (check == 3)
+        if (check.get() == 3)
             balance = " уже ";
 
         if (proteins && fats && carbohydrates) {
@@ -84,11 +65,16 @@ public class Cart<T extends Food> {
 
     }
 
-    private Food getFPC(Predicate<Food> predicate) {
-        return market.getThings(Food.class).stream()
-                .filter(predicate)
-                .findAny()
-                .get();
+    private boolean getFPC(Predicate<Food> predicate, AtomicInteger check) {
+        if (foodstuffs.stream().noneMatch(predicate))
+            return foodstuffs.add((T) market.getThings(Food.class).stream()
+                    .filter(predicate)
+                    .findAny()
+                    .get());
+        else {
+            check.incrementAndGet();
+            return true;
+        }
     }
 
 }
