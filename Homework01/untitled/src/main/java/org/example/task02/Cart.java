@@ -2,13 +2,17 @@ package org.example.task02;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Корзина
+ *
  * @param <T> Еда
  */
-public class Cart <T extends Food>{
+public class Cart<T extends Food> {
 
     /**
      * Товары в магазине
@@ -17,8 +21,7 @@ public class Cart <T extends Food>{
     private final UMarket market;
     private final Class<T> clazz;
 
-    public Cart(Class<T> clazz, UMarket market)
-    {
+    public Cart(Class<T> clazz, UMarket market) {
         this.clazz = clazz;
         this.market = market;
         foodstuffs = new ArrayList<>();
@@ -31,7 +34,7 @@ public class Cart <T extends Food>{
     /**
      * Распечатать список продуктов в корзине
      */
-    public void printFoodstuffs(){
+    public void printFoodstuffs() {
         AtomicInteger index = new AtomicInteger(1);
         foodstuffs.forEach(food -> {
             System.out.printf("[%d] %s (Белки: %s Жиры: %s Углеводы: %s)\n",
@@ -45,58 +48,47 @@ public class Cart <T extends Food>{
     /**
      * Балансировка корзины
      */
-    public void cardBalancing()
-    {
-        boolean proteins = false;
-        boolean fats = false;
-        boolean carbohydrates = false;
+    public void cardBalancing() {
+        boolean proteins, fats, carbohydrates;
+        int check = 0;
+        String balance = " ";
 
-        for (var food : foodstuffs)
-        {
-            if (!proteins && food.getProteins())
-                proteins = true;
-            else
-            if (!fats && food.getFats())
-                fats = true;
-            else
-            if (!carbohydrates && food.getCarbohydrates())
-                carbohydrates = true;
-            if (proteins && fats && carbohydrates)
-                break;
+        if (foodstuffs.stream().noneMatch(Food::getProteins))
+            proteins = foodstuffs.add((T) getFPC(Food::getProteins));
+        else {
+            proteins = true;
+            check++;
         }
 
-        if (proteins && fats && carbohydrates)
-        {
-            System.out.println("Корзина уже сбалансирована по БЖУ.");
-            return;
+        if (foodstuffs.stream().noneMatch(Food::getFats))
+            fats = foodstuffs.add((T) getFPC(Food::getFats));
+        else {
+            fats = true;
+            check++;
         }
 
-        for (var thing : market.getThings(Food.class))
-        {
-            if (!proteins && thing.getProteins())
-            {
-                proteins = true;
-                foodstuffs.add((T)thing);
-            }
-            else if (!fats && thing.getFats())
-            {
-                fats = true;
-                foodstuffs.add((T)thing);
-            }
-            else if (!carbohydrates && thing.getCarbohydrates())
-            {
-                carbohydrates = true;
-                foodstuffs.add((T)thing);
-            }
-            if (proteins && fats && carbohydrates)
-                break;
+        if (foodstuffs.stream().noneMatch(Food::getCarbohydrates))
+            carbohydrates = foodstuffs.add((T) getFPC(Food::getCarbohydrates));
+        else {
+            carbohydrates = true;
+            check++;
         }
 
-        if (proteins && fats && carbohydrates)
-            System.out.println("Корзина сбалансирована по БЖУ.");
-        else
-            System.out.println("Невозможно сбалансировать корзину по БЖУ.");
+        if (check == 3)
+            balance = " уже ";
 
+        if (proteins && fats && carbohydrates) {
+            System.out.printf("Корзина%sсбалансирована по БЖУ. ", balance);
+        } else
+            System.out.println("Невозможно сбалансировать корзину по БЖУ. ");
+
+    }
+
+    private Food getFPC(Predicate<Food> predicate) {
+        return market.getThings(Food.class).stream()
+                .filter(predicate)
+                .findAny()
+                .get();
     }
 
 }
