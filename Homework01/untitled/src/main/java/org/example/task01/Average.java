@@ -1,13 +1,11 @@
-package org.example;
+package org.example.task01;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.stream.Stream;
 
-public class Main {
+public class Average {
     public static void main(String[] args) {
-        List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 1352);
         System.out.println(
-                nums.stream()
+                Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9)
                         .filter(x -> x % 2 == 0)
                         .mapToDouble(x -> x)
                         .average()
