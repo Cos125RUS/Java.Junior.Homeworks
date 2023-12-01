@@ -22,22 +22,28 @@ public class Main {
 
     private static <T> void info(T obj) throws IllegalAccessException {
         Class<?> clazz = obj.getClass();
-        System.out.println(clazz.getSimpleName() + " {");
+        String modifier = getModifierName(clazz.getModifiers());
+        System.out.println(modifier + "class " + clazz.getSimpleName() + " extends " +
+                clazz.getSuperclass().getSimpleName() + " {");
         LinkedList<Field> fields = Arrays.stream(clazz.getSuperclass().getDeclaredFields())
                 .collect(Collectors.toCollection(LinkedList::new));
         fields.addAll(Arrays.stream(clazz.getDeclaredFields())
                 .collect(Collectors.toCollection(LinkedList::new)));
         for (Field field : fields) {
             field.setAccessible(true);
-            System.out.print("\t" + field.getType().getSimpleName());
-            System.out.println(" " + field.getName() + " = " + field.get(obj));
+            modifier = getModifierName(field.getModifiers());
+            Object value = field.get(obj);
+            if (value.getClass().getSimpleName().equals("String"))
+                value = String.format("\"%s\"", value);
+            System.out.print("\t" + modifier + field.getType().getSimpleName());
+            System.out.println(" " + field.getName() + " = " + value + ";");
         }
-        System.out.println("\tMethods:");
         Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
             method.setAccessible(true);
-            System.out.print("\t\t" + method.getAnnotatedReturnType());
-            System.out.println(" " + method.getName() + "()");
+            modifier = getModifierName(method.getModifiers());
+            System.out.print("\t" + modifier + method.getReturnType().getSimpleName());
+            System.out.println(" " + method.getName() + "() {};");
         }
         System.out.println("}\n");
     }
@@ -51,5 +57,14 @@ public class Main {
             }
         }
         System.out.println();
+    }
+
+    private static String getModifierName(int id) {
+        return switch (id) {
+            case 1 -> "public ";
+            case 2 -> "private ";
+            case 4 -> "protected ";
+            default -> "";
+        };
     }
 }
