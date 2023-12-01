@@ -54,15 +54,12 @@ public class Cart<T extends Food> {
         boolean fats = getFPC(Food::getFats, check);
         boolean carbohydrates = getFPC(Food::getCarbohydrates, check);
         String balance = " ";
-
         if (check.get() == 3)
             balance = " уже ";
-
         if (proteins && fats && carbohydrates) {
             System.out.printf("Корзина%sсбалансирована по БЖУ. ", balance);
         } else
             System.out.println("Невозможно сбалансировать корзину по БЖУ. ");
-
     }
 
     private boolean getFPC(Predicate<Food> predicate, AtomicInteger check) {

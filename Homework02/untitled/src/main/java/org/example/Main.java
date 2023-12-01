@@ -3,6 +3,7 @@ package org.example;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
@@ -43,7 +44,16 @@ public class Main {
             method.setAccessible(true);
             modifier = getModifierName(method.getModifiers());
             System.out.print("\t" + modifier + method.getReturnType().getSimpleName());
-            System.out.println(" " + method.getName() + "() {};");
+            System.out.print(" " + method.getName() + "(");
+            Parameter[] parameters = method.getParameters();
+            for (int i = 0; i < parameters.length - 1; i++) {
+                Parameter parameter = parameters[i];
+                System.out.print(parameter.getType().getSimpleName() + " " + parameter.getName() + ", ");
+            }
+            if (parameters.length > 1)
+                System.out.print(parameters[parameters.length - 1].getType().getSimpleName() + " " +
+                        parameters[parameters.length - 1].getName());
+            System.out.println(") {};");
         }
         System.out.println("}\n");
     }

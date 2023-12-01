@@ -17,4 +17,5 @@ public class Cat extends Animal {
     public void sleep() {
         System.out.printf("%s cпит, свернувшись клубочком на твоей подушке\n", name);
     }
+    public void Test(int i, String s) {}
 }
