@@ -19,43 +19,53 @@ public class Main {
         System.out.println();
         for (Animal animal : animals)
             use(animal, "makeSound");
+
+        info(new Test());
+
     }
 
     private static <T> void info(T obj) throws IllegalAccessException {
+        StringBuilder stringBuilder = new StringBuilder();
         Class<?> clazz = obj.getClass();
-        String modifier = getModifierName(clazz.getModifiers());
-        System.out.println(modifier + "class " + clazz.getSimpleName() + " extends " +
-                clazz.getSuperclass().getSimpleName() + " {");
+        stringBuilder.append(getModifierName(clazz.getModifiers())).append("class ")
+                .append(clazz.getSimpleName());
+        if (!clazz.getSuperclass().equals(Object.class))
+            stringBuilder.append(" extends ").append(clazz.getSuperclass().getSimpleName());
+        stringBuilder.append(" {\n");
         LinkedList<Field> fields = Arrays.stream(clazz.getSuperclass().getDeclaredFields())
                 .collect(Collectors.toCollection(LinkedList::new));
         fields.addAll(Arrays.stream(clazz.getDeclaredFields())
                 .collect(Collectors.toCollection(LinkedList::new)));
         for (Field field : fields) {
-            field.setAccessible(true);
-            modifier = getModifierName(field.getModifiers());
-            Object value = field.get(obj);
-            if (value.getClass().getSimpleName().equals("String"))
-                value = String.format("\"%s\"", value);
-            System.out.print("\t" + modifier + field.getType().getSimpleName());
-            System.out.println(" " + field.getName() + " = " + value + ";");
+            getFieldString(field, obj, stringBuilder);
         }
-        Method[] methods = clazz.getDeclaredMethods();
-        for (Method method : methods) {
+        for (Method method : clazz.getDeclaredMethods()) {
             method.setAccessible(true);
-            modifier = getModifierName(method.getModifiers());
-            System.out.print("\t" + modifier + method.getReturnType().getSimpleName());
-            System.out.print(" " + method.getName() + "(");
+            stringBuilder.append("\t").append(getModifierName(method.getModifiers()))
+                    .append(method.getReturnType().getSimpleName())
+                    .append(" ").append(method.getName()).append("(");
             Parameter[] parameters = method.getParameters();
             for (int i = 0; i < parameters.length - 1; i++) {
-                Parameter parameter = parameters[i];
-                System.out.print(parameter.getType().getSimpleName() + " " + parameter.getName() + ", ");
+                stringBuilder.append(parameters[i].getType().getSimpleName()).append(" ")
+                        .append(parameters[i].getName()).append(", ");
             }
-            if (parameters.length > 1)
-                System.out.print(parameters[parameters.length - 1].getType().getSimpleName() + " " +
-                        parameters[parameters.length - 1].getName());
-            System.out.println(") {};");
+            if (parameters.length > 0)
+                stringBuilder.append(parameters[parameters.length - 1].getType().getSimpleName())
+                        .append(" ").append(parameters[parameters.length - 1].getName());
+            stringBuilder.append(") {}\n");
         }
-        System.out.println("}\n");
+        stringBuilder.append("}\n");
+        System.out.println(stringBuilder.toString());
+    }
+
+    private static<T> void getFieldString(Field field, T obj, StringBuilder stringBuilder) throws IllegalAccessException {
+        field.setAccessible(true);
+        Object value = field.get(obj);
+        if (value.getClass().getSimpleName().equals("String"))
+            value = String.format("\"%s\"", value);
+        stringBuilder.append("\t").append(getModifierName(field.getModifiers()))
+                .append(field.getType().getSimpleName()).append(" ").append(field.getName())
+                .append(" = ").append(value).append(";\n");
     }
 
     private static <T> void use(T obj, String methodName) throws InvocationTargetException, IllegalAccessException {
