@@ -5,11 +5,11 @@ import java.io.Serializable;
 public class Student implements Serializable {
     private String name;
     private int age;
+    private transient double GPA; // Поле не подлежит сериализации
 
     private Student() {
     }
 
-    private transient double GPA; // Поле не подлежит сериализации
 
     public Student(String name, int age, double GPA) {
         this.name = name;
