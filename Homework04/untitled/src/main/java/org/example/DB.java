@@ -32,13 +32,25 @@ public class DB implements ImplCRUD<Course> {
     }
 
     @Override
-    public void update(Course course) {
-
+    public void update(int id, String title, double duration) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Course course = session.get(Course.class, id);
+        course.setTitle(title);
+        course.setDuration(duration);
+        session.update(course);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
-    public void delete(Course course) {
-
+    public void delete(int id) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Course course = session.get(Course.class, id);
+        session.delete(course);
+        session.getTransaction().commit();
+        session.close();
     }
 
     @Override
