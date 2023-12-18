@@ -4,6 +4,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -12,11 +16,12 @@ public class School {
     public static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        newDB();
         try (SessionFactory sessionFactory = new Configuration()
-                .configure("hibernate.cfg.xml")
+                .configure("hibernate.cfg2.xml")
                 .addAnnotatedClass(Course.class)
                 .buildSessionFactory()) {
-            int choice = -1;
+            int choice;
             while ((choice = menu()) != 0) {
                 switch (choice) {
                     case 1 -> selectAll(sessionFactory.openSession());
@@ -31,6 +36,20 @@ public class School {
         }
 
         scanner.close();
+    }
+
+    public static void newDB(){
+        String url = "jdbc:mysql://school.db:33306/schoolDB";
+        String user = "root";
+        String password = "password";
+        try (Connection connection = DriverManager.getConnection(url, user, password)){
+            String sql = "CREATE TABLE IF NOT EXISTS Courses (id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255), duration DOUBLE)";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static int menu() {

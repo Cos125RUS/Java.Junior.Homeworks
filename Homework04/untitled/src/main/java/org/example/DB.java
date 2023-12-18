@@ -4,17 +4,32 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.List;
 
 public class DB implements ImplCRUD<Course> {
     SessionFactory sessionFactory;
 
     public DB() {
+        newDB();
         sessionFactory = new Configuration()
                 .configure("hibernate.cfg.xml")
                 .addAnnotatedClass(Course.class)
                 .buildSessionFactory();
+    }
+
+    private void newDB(){
+        String url = "jdbc:mysql://localhost:33306/schoolDB";
+        String user = "root";
+        String password = "password";
+        try (Connection connection = DriverManager.getConnection(url, user, password)){
+            String sql = "CREATE TABLE IF NOT EXISTS Courses (id INT PRIMARY KEY AUTO_INCREMENT, title VARCHAR(255), duration DOUBLE)";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.execute();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void exit(){
