@@ -102,6 +102,7 @@ public class View extends JFrame {
             String title = titleField.getText();
             int duration = (int) durationSpinner.getValue();
             //TODO: Добавить валидацию
+            db.create(new Course(title, duration));
         });
         courseWindow.add(titleLabel);
         courseWindow.add(titleField);
