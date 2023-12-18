@@ -2,7 +2,7 @@
 <project version="4">
   <component name="DBNavigator.Project.DataEditorManager">
     <record-view-column-sorting-type value="BY_INDEX" />
-    <value-preview-text-wrapping value="true" />
+    <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
@@ -26,10 +26,7 @@ SELECT * FROM Courses;]]></console>
     <last-used-providers />
   </component>
   <component name="DBNavigator.Project.DatabaseFileManager">
-    <open-files>
-      <object connection-id="19ae3adc-6c51-429e-b9e1-38872a7c69ff" object-ref="consoles/Connection" />
-      <object connection-id="19ae3adc-6c51-429e-b9e1-38872a7c69ff" object-ref="schemas/schoolDB/tables/Courses" />
-    </open-files>
+    <open-files />
   </component>
   <component name="DBNavigator.Project.DatabaseSessionManager">
     <connection id="19ae3adc-6c51-429e-b9e1-38872a7c69ff" />

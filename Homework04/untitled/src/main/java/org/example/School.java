@@ -39,7 +39,7 @@ public class School {
     }
 
     public static void newDB(){
-        String url = "jdbc:mysql://school.db:33306/schoolDB";
+        String url = "jdbc:mysql://school.db:3306/schoolDB";
         String user = "root";
         String password = "password";
         try (Connection connection = DriverManager.getConnection(url, user, password)){
