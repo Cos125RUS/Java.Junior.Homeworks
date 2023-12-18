@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="untitled:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/untitled_jar</output-path>
+  <artifact type="jar" name="SchoolDB:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/SchoolDB_jar</output-path>
     <root id="archive" name="untitled.jar">
       <element id="module-output" name="untitled" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/antlr/antlr/2.7.7/antlr-2.7.7.jar" path-in-jar="/" />
