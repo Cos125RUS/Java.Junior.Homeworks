@@ -46,6 +46,12 @@ public class View extends JFrame {
         JMenuItem delete = new JMenuItem("Delete selected");
         delete.addActionListener(actionEvent -> {
             //TODO: Добавить множественное удаление
+            coursesMap.forEach((key, value) -> {
+                if (key.isSelected())
+                    db.delete(value.getId());
+            });
+            remove(mainWindow);
+            showList(db.selectAll());
         });
         fileMenu.add(showItem);
         fileMenu.add(newItem);
