@@ -1,0 +1,5 @@
+дек. 22, 2023 7:51:14 AM org.example.App authorization
+INFO: Connection
+InetAddress: localhost/127.0.0.1
+Remote IP: 127.0.0.1
+LocalPort:55893

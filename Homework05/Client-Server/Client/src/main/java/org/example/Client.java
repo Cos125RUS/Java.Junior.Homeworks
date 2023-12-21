@@ -1,43 +1,52 @@
 package org.example;
 
+import org.example.ChatModels.Chat;
+
 import java.io.*;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Client {
 
+    private final App app;
     private final Socket socket;
-    private final String name;
+    private final User user;
+    private final Logger logger;
+    private final LinkedList<Chat> chats;
     private BufferedWriter bufferedWriter;
     private BufferedReader bufferedReader;
 
-    public Client(Socket socket, String userName){
+
+    public Client(App app, Socket socket, String userName, Logger logger) {
+        this.app = app;
         this.socket = socket;
-        name = userName;
-        try
-        {
+        this.user = new User(userName);
+        this.logger = logger;
+        this.chats = new LinkedList<>(); //TODO Добавить загрузку чатов
+        try {
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        }
-        catch (IOException e){
+        } catch (IOException e) {
+            logger.log(Level.WARNING, e.getMessage());
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
-
-
     }
 
     /**
      * Слушатель для входящих сообщений
      */
-    public void listenForMessage(){
+    public void listenForMessage() {
         new Thread(() -> {
             String message;
-            while (socket.isConnected()){
+            while (socket.isConnected()) {
                 try {
                     message = bufferedReader.readLine();
-                    System.out.println(message);
-                }
-                catch (IOException e){
+                    app.printMessage(message);
+                } catch (IOException e) {
+                    logger.log(Level.WARNING, e.getMessage());
                     closeEverything(socket, bufferedReader, bufferedWriter);
                 }
             }
@@ -47,25 +56,31 @@ public class Client {
     /**
      * Отправить сообщение
      */
-    public void sendMessage(){
+    public void sendMessage(String message) {
         try {
-            bufferedWriter.write(name);
-            bufferedWriter.newLine();
-            bufferedWriter.flush();
-
-            Scanner scanner = new Scanner(System.in);
-            while (socket.isConnected()) {
-                String message = scanner.nextLine();
-                bufferedWriter.write(name + ": " + message);
+            if (socket.isConnected()) {
+                bufferedWriter.write(message);
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
             }
-        } catch (IOException e){
+        } catch (IOException e) {
+            logger.log(Level.WARNING, e.getMessage());
             closeEverything(socket, bufferedReader, bufferedWriter);
         }
     }
 
-    private void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter){
+    public void sendLogin() {
+        try {
+            bufferedWriter.write(user.getName());
+            bufferedWriter.newLine();
+            bufferedWriter.flush();
+        } catch (IOException e) {
+            logger.log(Level.WARNING, e.getMessage());
+            closeEverything(socket, bufferedReader, bufferedWriter);
+        }
+    }
+
+    private void closeEverything(Socket socket, BufferedReader bufferedReader, BufferedWriter bufferedWriter) {
         try {
             if (bufferedReader != null) {
                 bufferedReader.close();
@@ -76,11 +91,13 @@ public class Client {
             if (socket != null) {
                 socket.close();
             }
-        }
-        catch (IOException e){
-            e.printStackTrace();
+        } catch (IOException e) {
+            logger.log(Level.WARNING, e.getMessage());
         }
     }
 
 
+    public LinkedList<Chat> getChats() {
+        return chats;
+    }
 }
