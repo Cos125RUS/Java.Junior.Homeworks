@@ -2,9 +2,10 @@ package org.example;
 
 import org.example.ChatModels.Chat;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.*;
 
@@ -18,14 +19,31 @@ public class App {
     public App() {
         try {
             logger = Logger.getLogger(App.class.getName());
-            FileHandler handler = new FileHandler("log.txt");
+            FileHandler handler = new FileHandler("log.txt", true);
             handler.setFormatter(new SimpleFormatter());
             logger.addHandler(handler);
         } catch (IOException e) {
             e.printStackTrace();
         }
 //        TODO добавить загрузку данных пользователя
-        ui = new UI(this);
+        User user = loadUser();
+        if (user == null)
+            ui = new UI(this);
+        else
+            ui = new UI(this, user);
+    }
+
+    private User loadUser() {
+        try (FileInputStream fileInputStream = new FileInputStream("user.bin");
+             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            return (User) objectInputStream.readObject();
+        } catch (EOFException e) {
+            //TODO добавить логирование
+            return null;
+        } catch (ClassNotFoundException | IOException e) {
+            logger.log(Level.WARNING, e.getMessage());
+            return null;
+        }
     }
 
     public boolean authorization(String login) {
@@ -54,7 +72,7 @@ public class App {
         client.sendMessage(message);
     }
 
-    public List<Chat> getChats(){
+    public List<Chat> getChats() {
         return client.getChats();
     }
 

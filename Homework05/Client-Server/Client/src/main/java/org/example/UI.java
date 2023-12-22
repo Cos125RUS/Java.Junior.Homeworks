@@ -34,14 +34,27 @@ public class UI extends JFrame {
     public UI(App app) {
         super("The Messenger");
         this.app = app;
+        createMainFrame();
+        createLoginWindow();
+        baseContainer.add(loginContainer);
+        setVisible(true);
+    }
+
+    public UI(App app, User user) {
+        super("The Messenger");
+        this.app = app;
+        createMainFrame();
+        if (app.authorization(user.getName()))
+            authorization();
+        setVisible(true);
+    }
+
+    private void createMainFrame() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         setSize(WIDTH, HEIGHT);
         setLocation(POS_X, POS_Y);
         createBaseContainer();
-        createLoginWindow();
-        baseContainer.add(loginContainer);
-        setVisible(true);
     }
 
     private void createBaseContainer() {
