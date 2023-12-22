@@ -14,17 +14,21 @@ public class UI extends JFrame {
     private static final int POS_X = 100;
     private static final int POS_Y = 100;
 
-    private App app;
+    private final App app;
     private Container baseContainer;
+    private Container loginContainer;
     private Container chatsListContainer;
     private Container mainChatContainer;
+    private Container currentChatContainer;
+    private Container chatWindowContainer;
+    private Container lastMessage;
     private JPanel loginWindow;
     private JPanel chatListWindow;
     private JPanel chatsField;
     private JPanel mainWindow;
-    private JPanel currentChat;
+    private JPanel currentChatPanel;
+    private JPanel currentChatWindow;
     private SpringLayout currentChatLayout;
-    private JLabel lastMessage;
     private HashMap<String, JButton> chats;
 
     public UI(App app) {
@@ -34,27 +38,40 @@ public class UI extends JFrame {
         setResizable(false);
         setSize(WIDTH, HEIGHT);
         setLocation(POS_X, POS_Y);
-        baseContainer = getContentPane();
+        createBaseContainer();
         createLoginWindow();
-        baseContainer.add(loginWindow);
+        baseContainer.add(loginContainer);
         setVisible(true);
     }
 
-    private void authorization(){
+    private void createBaseContainer() {
+        baseContainer = getContentPane();
+        baseContainer.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        baseContainer.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+    }
+
+    private void authorization() {
         createChatListWindow();
         createMainWindow();
-        baseContainer.add(chatListWindow);
-        baseContainer.add(mainWindow);
+        setBaseContainer();
+    }
+
+    private void setBaseContainer() {
+        baseContainer.setLayout(new BoxLayout(baseContainer, BoxLayout.X_AXIS));
+        baseContainer.add(chatsListContainer);
+        baseContainer.add(mainChatContainer);
     }
 
     private void createLoginWindow() {
+        loginContainer = new Container();
+        loginContainer.setSize(WIDTH, HEIGHT);
         SpringLayout layout = new SpringLayout();
         loginWindow = new JPanel(layout);
-        loginWindow.setSize(WIDTH , HEIGHT);
+        loginWindow.setSize(WIDTH, HEIGHT);
         loginWindow.setBackground(Color.LIGHT_GRAY);
         JLabel loginLabel = new JLabel("Имя");
         JTextField loginField = new JTextField();
-        loginField.setPreferredSize(new Dimension(200,20));
+        loginField.setPreferredSize(new Dimension(200, 20));
         JButton loginButton = new JButton("Войти");
         loginButton.addActionListener(action -> {
             String login = loginField.getText();
@@ -73,10 +90,13 @@ public class UI extends JFrame {
         layout.putConstraint(SpringLayout.WEST, loginField, WIDTH / 2 - 85, SpringLayout.WEST, loginWindow);
         layout.putConstraint(SpringLayout.NORTH, loginButton, 35, SpringLayout.NORTH, loginField);
         layout.putConstraint(SpringLayout.WEST, loginButton, WIDTH / 2 - 22, SpringLayout.WEST, loginWindow);
+        loginContainer.add(loginWindow);
     }
 
     private void createChatListWindow() {
         chats = new HashMap<>();
+        chatsListContainer = new Container();
+        chatsListContainer.setPreferredSize(new Dimension(WIDTH / 3, HEIGHT));
         chatListWindow = new JPanel(new BorderLayout());
         chatListWindow.setSize(WIDTH / 3, HEIGHT);
         chatListWindow.setBackground(Color.GRAY);
@@ -102,8 +122,10 @@ public class UI extends JFrame {
         JTextField search = new JTextField();
         chatListBar.add(chatSetting);
         chatListBar.add(search);
+        chatListBar.add(new JLabel("   "));
         chatListWindow.add(chatListBar, BorderLayout.NORTH);
         addChats();
+        chatsListContainer.add(chatListWindow);
     }
 
     private void addChats() {
@@ -116,12 +138,12 @@ public class UI extends JFrame {
         createChatInChatList(new Contact(12L, new User("Contact03")));
     }
 
-    private void createChatInChatList(Chat chat){
+    private void createChatInChatList(Chat chat) {
         chatsField.setVisible(false);
         JButton chatButton = new JButton(chat.getName());
-        chatButton.setPreferredSize(new Dimension(WIDTH / 3 - 2, 50));
+        chatButton.setPreferredSize(new Dimension(WIDTH / 3, 50));
         chatButton.addActionListener(action -> {
-            mainWindow.remove(currentChat);
+            mainWindow.remove(currentChatPanel);
             showChat(chat);
         });
         chatsField.add(chatButton);
@@ -130,65 +152,96 @@ public class UI extends JFrame {
     }
 
     private void createMainWindow() {
+        mainChatContainer = new Container();
+        mainChatContainer.setPreferredSize(new Dimension(WIDTH / 3 * 2, HEIGHT));
         mainWindow = new JPanel(new BorderLayout());
-        mainWindow.setSize(WIDTH / 3 * 2, HEIGHT);
+        mainWindow.setSize(WIDTH / 3 * 2 - 10, HEIGHT);
         mainWindow.setBackground(Color.LIGHT_GRAY);
         JMenuBar mainBar = new JMenuBar();
+        mainBar.setSize(30, (int) mainWindow.getSize().getHeight());
         mainBar.setLayout(new BorderLayout());
         JMenu windowSetting = new JMenu("...");
         mainBar.add(windowSetting, BorderLayout.EAST);
         mainWindow.add(mainBar, BorderLayout.NORTH);
-        currentChat = new JPanel();
-        currentChat.setVisible(false);
-        mainWindow.add(currentChat, BorderLayout.CENTER);
+        currentChatPanel = new JPanel();
+        currentChatPanel.setVisible(false);
+        mainWindow.add(currentChatPanel, BorderLayout.CENTER);
+        mainChatContainer.add(mainWindow);
     }
 
     private void showChat(Chat chat) {
 //        TODO загрузка истории чата
         mainWindow.setVisible(false);
+        currentChatContainer = new Container();
+        currentChatContainer.setPreferredSize(new Dimension(WIDTH / 3 * 2, HEIGHT - 60));
         currentChatLayout = new SpringLayout();
-        currentChat = new JPanel(currentChatLayout);
-        currentChat.setBackground(Color.getHSBColor(100,100,255));
-        mainWindow.add(currentChat, BorderLayout.CENTER);
-        lastMessage = new JLabel();
-        currentChatLayout.putConstraint(SpringLayout.NORTH, lastMessage, 0, SpringLayout.NORTH, currentChat);
-        currentChatLayout.putConstraint(SpringLayout.WEST, lastMessage, WIDTH/3, SpringLayout.WEST, currentChat);
+        currentChatPanel = new JPanel(new BorderLayout());
+        currentChatPanel.setSize(WIDTH / 3 * 2, HEIGHT - 60);
+        currentChatPanel.setBackground(Color.getHSBColor(100, 100, 255));
+        chatWindowContainer = new Container();
+        chatWindowContainer.setPreferredSize(new Dimension(WIDTH / 3 * 2, HEIGHT - 90));
+        currentChatWindow = new JPanel(currentChatLayout);
+        currentChatWindow.setSize(WIDTH / 3 * 2, HEIGHT - 90);
+        currentChatWindow.setBackground(Color.YELLOW);
+        currentChatPanel.add(chatWindowContainer, BorderLayout.CENTER);
+        chatWindowContainer.add(currentChatWindow);
+        lastMessage = getMessageContainer("");
+        currentChatLayout.putConstraint(SpringLayout.NORTH, lastMessage,
+                -((int) lastMessage.getPreferredSize().getHeight()), SpringLayout.NORTH, currentChatWindow);
+        currentChatLayout.putConstraint(SpringLayout.WEST, lastMessage, 0, SpringLayout.WEST, currentChatWindow);
         JMenuBar entryBar = getEntryBar();
-        currentChat.add(entryBar);
-        currentChatLayout.putConstraint(SpringLayout.SOUTH, entryBar, 0, SpringLayout.SOUTH, currentChat);
-        currentChatLayout.putConstraint(SpringLayout.WEST, entryBar, WIDTH/3, SpringLayout.WEST, currentChat);
+        currentChatPanel.add(entryBar, BorderLayout.SOUTH);
+        currentChatContainer.add(currentChatPanel);
+        mainWindow.add(currentChatContainer, BorderLayout.CENTER);
         mainWindow.setVisible(true);
     }
 
     private JMenuBar getEntryBar() {
         JMenuBar entryBar = new JMenuBar();
-        entryBar.setPreferredSize(new Dimension(WIDTH/3*2 - 14, 30));
+        entryBar.setPreferredSize(new Dimension(WIDTH / 3 * 2 - 11, 30));
         JTextField entryField = new JTextField();
         entryBar.add(entryField);
         JButton sendButton = new JButton(">>");
         sendButton.addActionListener(action -> {
             String message = entryField.getText();
             app.sendMessage(message);
-            mainWindow.setVisible(false);
-            JLabel newMessage = new JLabel(message);
-            currentChat.add(newMessage);
-            currentChatLayout.putConstraint(SpringLayout.NORTH, newMessage, 20, SpringLayout.NORTH, lastMessage);
-            currentChatLayout.putConstraint(SpringLayout.EAST, newMessage, - (message.length() + 10),
-                    SpringLayout.EAST, currentChat);
-            lastMessage = newMessage;
-            mainWindow.setVisible(true);
+            currentChatWindow.setVisible(false);
+            Container messageContainer = getMessageContainer(message);
+            currentChatWindow.add(messageContainer);
+            currentChatLayout.putConstraint(SpringLayout.NORTH, messageContainer,
+                    (int) messageContainer.getPreferredSize().getHeight() + 15,
+                    SpringLayout.NORTH, lastMessage);
+            currentChatLayout.putConstraint(SpringLayout.EAST, messageContainer, -15,
+                    SpringLayout.EAST, currentChatWindow);
+            lastMessage = messageContainer;
+            currentChatWindow.setVisible(true);
         });
         entryBar.add(sendButton);
         return entryBar;
     }
 
     public void print(String message) {
-        mainWindow.setVisible(false);
+        currentChatWindow.setVisible(false);
+        Container messageContainer = getMessageContainer(message);
+        currentChatWindow.add(messageContainer);
+        currentChatLayout.putConstraint(SpringLayout.NORTH, messageContainer,
+                (int) messageContainer.getPreferredSize().getHeight() + 15,
+                SpringLayout.NORTH, lastMessage);
+        currentChatLayout.putConstraint(SpringLayout.WEST, messageContainer, 15,
+                SpringLayout.WEST, currentChatWindow);
+        lastMessage = messageContainer;
+        currentChatWindow.setVisible(true);
+    }
+
+    private Container getMessageContainer(String message) {
+        Container messageContainer = new Container();
+        messageContainer.setPreferredSize(new Dimension(200, 50));
+        JPanel messageBox = new JPanel(new BorderLayout());
+        messageBox.setSize(200,50);
+        messageBox.setBackground(Color.CYAN);
+        messageContainer.add(messageBox);
         JLabel newMessage = new JLabel(message);
-        currentChat.add(newMessage);
-        currentChatLayout.putConstraint(SpringLayout.NORTH, newMessage, 20, SpringLayout.NORTH, lastMessage);
-        currentChatLayout.putConstraint(SpringLayout.WEST, newMessage, WIDTH/3+10, SpringLayout.WEST, currentChat);
-        lastMessage = newMessage;
-        mainWindow.setVisible(true);
+        messageBox.add(newMessage);
+        return messageContainer;
     }
 }
