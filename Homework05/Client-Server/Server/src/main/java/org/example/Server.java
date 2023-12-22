@@ -3,13 +3,29 @@ package org.example;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class Server {
-
     private final ServerSocket serverSocket;
+    private Logger logger;
 
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
+        createLogger();
+    }
+
+    private void createLogger() {
+        try {
+            logger = Logger.getLogger(Server.class.getName());
+            FileHandler handler = new FileHandler("ServerLog.txt", true);
+            handler.setFormatter(new SimpleFormatter());
+            logger.addHandler(handler);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void runServer(){
@@ -25,6 +41,7 @@ public class Server {
         }
         catch (IOException e){
             closeSocket();
+            logger.log(Level.WARNING, e.getMessage());
         }
     }
 
@@ -32,7 +49,7 @@ public class Server {
         try{
             if (serverSocket != null) serverSocket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, e.getMessage());
         }
     }
 

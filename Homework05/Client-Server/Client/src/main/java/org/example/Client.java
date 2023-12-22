@@ -35,21 +35,6 @@ public class Client {
         }
     }
 
-    public Client(App app, Socket socket, String userName, Logger logger, User user) {
-        this.app = app;
-        this.socket = socket;
-        this.user = user;
-        this.logger = logger;
-        this.chats = new LinkedList<>(); //TODO Добавить загрузку чатов
-        try {
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        } catch (IOException e) {
-            logger.log(Level.WARNING, e.getMessage());
-            closeEverything(socket, bufferedReader, bufferedWriter);
-        }
-    }
-
     /**
      * Слушатель для входящих сообщений
      */

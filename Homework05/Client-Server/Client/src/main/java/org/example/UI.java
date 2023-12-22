@@ -44,8 +44,10 @@ public class UI extends JFrame {
         super("The Messenger");
         this.app = app;
         createMainFrame();
-        if (app.authorization(user.getName()))
+        if (app.authorization(user.getName())) {
+            app.saveUserData(user);
             authorization();
+        }
         setVisible(true);
     }
 

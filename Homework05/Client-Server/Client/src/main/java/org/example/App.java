@@ -15,8 +15,18 @@ public class App {
     private final UI ui;
     private Client client;
     private Logger logger;
+    private User user;
 
     public App() {
+        createLogger();
+        user = loadUser();
+        if (user == null)
+            ui = new UI(this);
+        else
+            ui = new UI(this, user);
+    }
+
+    private void createLogger() {
         try {
             logger = Logger.getLogger(App.class.getName());
             FileHandler handler = new FileHandler("log.txt", true);
@@ -25,12 +35,6 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        TODO добавить загрузку данных пользователя
-        User user = loadUser();
-        if (user == null)
-            ui = new UI(this);
-        else
-            ui = new UI(this, user);
     }
 
     private User loadUser() {
@@ -61,6 +65,18 @@ public class App {
         } catch (IllegalArgumentException | SecurityException | IOException e) {
             logger.log(Level.WARNING, e.getMessage());
             return false;
+        }
+    }
+
+    public void saveUserData(User user) {
+        this.user = user;
+        try (FileOutputStream fileOutputStream = new FileOutputStream("user.bin");
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream)) {
+            objectOutputStream.writeObject(user);
+        } catch (FileNotFoundException e) {
+            logger.log(Level.WARNING, e.getMessage());
+        } catch (IOException e) {
+            logger.log(Level.WARNING, e.getMessage());
         }
     }
 
