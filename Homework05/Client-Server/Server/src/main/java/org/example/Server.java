@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.DataBase.DB;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -11,10 +13,12 @@ import java.util.logging.SimpleFormatter;
 public class Server {
     private final ServerSocket serverSocket;
     private Logger logger;
+    private DB db;
 
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
         createLogger();
+        db = new DB(logger);
     }
 
     private void createLogger() {
@@ -29,18 +33,19 @@ public class Server {
     }
 
     public void runServer(){
-        System.out.println("Сервер запущен");
+        logger.log(Level.INFO, "Server started");
         try {
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
-                ClientManager clientManager = new ClientManager(socket);
-                System.out.println("Подключен новый клиент!");
+                ClientManager clientManager = new ClientManager(socket, logger);
+                logger.log(Level.INFO, "New connection");
                 Thread thread = new Thread(clientManager);
                 thread.start();
             }
         }
         catch (IOException e){
             closeSocket();
+            db.exit();
             logger.log(Level.WARNING, e.getMessage());
         }
     }

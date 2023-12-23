@@ -38,3 +38,4 @@ build/
 .DS_Store
 
 /Client/src/main/java/org/example/Test.java
+/Server/src/main/java/org/example/Test.java

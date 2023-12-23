@@ -3,6 +3,8 @@ package org.example;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientManager implements Runnable {
 
@@ -10,11 +12,12 @@ public class ClientManager implements Runnable {
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String name;
-
+    private final Logger logger;
     public final static ArrayList<ClientManager> clients = new ArrayList<>();
 
-    public ClientManager(Socket socket) {
+    public ClientManager(Socket socket, Logger logger) {
         this.socket = socket;
+        this.logger = logger;
         try {
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -24,6 +27,7 @@ public class ClientManager implements Runnable {
             broadcastMessage("Server: " + name + " подключился к чату.");
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
+            logger.log(Level.WARNING, e.getMessage());
         }
 
 
@@ -44,6 +48,7 @@ public class ClientManager implements Runnable {
                 broadcastMessage(massageFromClient);
             } catch (IOException e) {
                 closeEverything(socket, bufferedReader, bufferedWriter);
+                logger.log(Level.WARNING, e.getMessage());
                 break;
             }
         }
@@ -70,6 +75,7 @@ public class ClientManager implements Runnable {
             client.bufferedWriter.flush();
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
+            logger.log(Level.WARNING, e.getMessage());
         }
     }
 
@@ -91,7 +97,7 @@ public class ClientManager implements Runnable {
                 socket.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.WARNING, e.getMessage());
         }
     }
 
