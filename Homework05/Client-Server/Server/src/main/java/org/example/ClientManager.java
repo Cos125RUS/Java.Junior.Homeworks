@@ -5,6 +5,7 @@ import org.example.ChatModels.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -116,7 +117,29 @@ public class ClientManager implements Runnable {
     }
 
     private void newGroup(String usersList) {
-
+        StringBuilder data = new StringBuilder("new_group" + DELIMITER);
+        UsersList users = (UsersList) Arrays.stream(usersList.split("%"))
+                .map(db::getUserFromName)
+                .toList();
+        if (!users.isEmpty()) {
+            Group group = new Group();
+            data.append("1" + DELIMITER).append(group.getId()).append("{");
+            for (int i = 0; i < users.size() - 1; i++) {
+                data.append(users.get(i).getId()).append(":").append(users.get(i).getName()).append(",");
+            }
+            data.append(users.get(users.size() - 1).getId()).append(":")
+                    .append(users.get(users.size() - 1).getName()).append("}");
+            logger.log(Level.INFO, "Create new group. Group ID: " + group.getId() +
+                    ". Group Name: " + group.getName());
+            for (User u : users) {
+                ClientManager client = activeUsers.get(u.getId());
+                client.send(client, data.toString());
+            }
+        } else {
+            logger.log(Level.INFO, "New group don't create");
+            data.append("0").append(DELIMITER).append("-");
+            send(this, data.toString());
+        }
     }
 
     private void broadcastMessage(String message) {
@@ -134,8 +157,8 @@ public class ClientManager implements Runnable {
     }
 
     private void groupMessage(UsersList users, String message) {
-        for (User u: users){
-            if (!user.getName().equals(u.getName())){
+        for (User u : users) {
+            if (!user.getName().equals(u.getName())) {
                 ClientManager client = activeUsers.get(u.getId());
                 client.send(client, message);
             }
