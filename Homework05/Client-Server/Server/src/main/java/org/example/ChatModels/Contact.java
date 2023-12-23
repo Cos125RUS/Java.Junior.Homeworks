@@ -21,7 +21,7 @@ public class Contact extends Chat {
     }
 
     public Contact(User u1, User u2) {
-        super();
+        super(u1, u2);
         this.id = super.getId();
         this.u1 = u1;
         this.u1ID = u1.getId();
@@ -36,6 +36,7 @@ public class Contact extends Chat {
 
     public void setId(long id) {
         this.id = id;
+        super.setId(id);
     }
 
     public long getU1ID() {
@@ -70,4 +71,16 @@ public class Contact extends Chat {
         this.u2 = u2;
     }
 //    endregion
+
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id=" + id +
+                ", u1ID=" + u1ID +
+                ", u2ID=" + u2ID +
+                ", u1=" + u1 +
+                ", u2=" + u2 +
+                '}';
+    }
 }

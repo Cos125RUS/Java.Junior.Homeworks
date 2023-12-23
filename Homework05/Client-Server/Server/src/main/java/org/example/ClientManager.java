@@ -1,5 +1,8 @@
 package org.example;
 
+import org.example.ChatModels.Contact;
+import org.example.ChatModels.User;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -11,41 +14,59 @@ public class ClientManager implements Runnable {
     private final Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private String name;
+    private User user;
     private final Logger logger;
-    public final static ArrayList<ClientManager> clients = new ArrayList<>();
+    private final DB db;
+    public final static ArrayList<ClientManager> activeUsers = new ArrayList<>();
+    private static final String DELIMITER = "#%@!&=SEPORATION=!@%#";
 
-    public ClientManager(Socket socket, Logger logger) {
+    public ClientManager(Socket socket, Logger logger, DB db) {
         this.socket = socket;
         this.logger = logger;
+        this.db = db;
         try {
             bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            name = bufferedReader.readLine();
-            clients.add(this);
-            System.out.println(name + " подключился к чату.");
-            broadcastMessage("Server: " + name + " подключился к чату.");
+            String name = bufferedReader.readLine();
+//            TODO Добавить валидацию
+            user = findUser(name);
+            activeUsers.add(this);
+            logger.log(Level.INFO, name + " is connected");
+            if (!user.getChatsList().isEmpty()) {
+//                TODO Добавить отправку чатов
+                new Loader(user, db, logger, bufferedWriter).start();
+            }
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
             logger.log(Level.WARNING, e.getMessage());
         }
+    }
 
-
+    private User findUser(String name) {
+        User findUser = db.getUserFromName(name);
+        if (findUser != null) {
+            logger.log(Level.INFO, name + " data find in DataBase");
+            return findUser;
+        }
+        logger.log(Level.INFO, name + " data not find in DataBase");
+        User newUser = new User(name);
+        db.create(newUser);
+        logger.log(Level.INFO, "Create new User. Username: " + name);
+        return newUser;
     }
 
     @Override
     public void run() {
-        String massageFromClient;
-
+        String massage;
         while (socket.isConnected()) {
             try {
-                massageFromClient = bufferedReader.readLine();
-                if (massageFromClient == null) {
+                massage = bufferedReader.readLine();
+                if (massage == null) {
                     // для  macOS
                     closeEverything(socket, bufferedReader, bufferedWriter);
                     break;
                 }
-                broadcastMessage(massageFromClient);
+                handling(massage);
             } catch (IOException e) {
                 closeEverything(socket, bufferedReader, bufferedWriter);
                 logger.log(Level.WARNING, e.getMessage());
@@ -54,14 +75,54 @@ public class ClientManager implements Runnable {
         }
     }
 
+    private void handling(String massage) {
+        String[] options = massage.split(DELIMITER);
+        String contentType = options[0];
+        int chatId = Integer.parseInt(options[1]);
+        String payloadData = options[2];
+        switch (contentType) {
+            case "text" -> sendMessage(chatId, payloadData);
+            case "find" -> newContact(payloadData);
+            case "create" -> newGroup(payloadData);
+            case "media" -> {
+            } // TODO отправка медиа
+            case "contact" -> {
+            } //TODO отправка контактов
+            default -> logger.log(Level.WARNING, "Unknown send options");
+        }
+    }
+
+    private void sendMessage(int chatId, String message) {
+
+    }
+
+    private void newContact(String userName) {
+        String message = "new_contact" + DELIMITER;
+        User findUser = db.getUserFromName(userName);
+        if (findUser != null) {
+            logger.log(Level.INFO, userName + " data find in DataBase");
+            Contact contact = new Contact(user, findUser);
+            db.create(contact);
+            message += "1" + DELIMITER + contact.getId() + "%" + findUser.getId();
+        } else {
+            logger.log(Level.INFO, userName + " data not find in DataBase");
+            message += "0" + DELIMITER + "-";
+        }
+        send(this, message);
+    }
+
+    private void newGroup(String usersList) {
+
+    }
+
     private void broadcastMessage(String message) {
-        if (message.replace(name + ": ", "").charAt(0) == '@') {
+        if (message.replace(user.getName() + ": ", "").charAt(0) == '@') {
             String destination = message.split(" ")[1].replace("@", "");
-            clients.stream().filter(it -> it.name.equals(destination))
+            activeUsers.stream().filter(it -> it.user.getName().equals(destination))
                     .forEach(client -> send(client, message));
         } else {
-            for (ClientManager client : clients) {
-                if (!client.name.equals(name)) {
+            for (ClientManager client : activeUsers) {
+                if (!client.user.getName().equals(user.getName())) {
                     send(client, message);
                 }
             }
@@ -102,9 +163,16 @@ public class ClientManager implements Runnable {
     }
 
     private void removeClient() {
-        clients.remove(this);
-        System.out.println(name + " покинул чат.");
-        broadcastMessage("Server: " + name + " покинул чат.");
+        activeUsers.remove(this);
+        logger.log(Level.INFO, user.getName() + " is disconnected");
     }
 
+
+//    region GettersAndSetters
+
+    public User getUser() {
+        return user;
+    }
+
+//    endregion
 }

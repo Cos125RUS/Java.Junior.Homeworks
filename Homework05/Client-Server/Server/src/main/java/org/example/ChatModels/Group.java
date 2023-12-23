@@ -14,17 +14,14 @@ public class Group extends Chat{
     private String name;
     @Column(name = "UsersList")
     private String usersList;
-    @Transient
-    private UsersList users;
 
     public Group() {
     }
 
     public Group(String name, UsersList users) {
-        super();
+        super(users);
         this.id = super.getId();
         this.name = name;
-        this.users = users;
     }
     public void addChat(User user) {
         users.add(user);
@@ -55,14 +52,19 @@ public class Group extends Chat{
 
     public void setId(long id) {
         this.id = id;
+        super.setId(id);
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(UsersList users) {
-        this.users = users;
-    }
 //    endregion
+
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", usersList='" + usersList + '\'' +
+                ", users=" + users +
+                '}';
+    }
 }

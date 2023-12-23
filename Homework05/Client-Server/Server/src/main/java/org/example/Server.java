@@ -1,7 +1,5 @@
 package org.example;
 
-import org.example.DataBase.DB;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,7 +11,7 @@ import java.util.logging.SimpleFormatter;
 public class Server {
     private final ServerSocket serverSocket;
     private Logger logger;
-    private DB db;
+    private final DB db;
 
     public Server(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
@@ -32,26 +30,26 @@ public class Server {
         }
     }
 
-    public void runServer(){
+    public void runServer() {
         logger.log(Level.INFO, "Server started");
         try {
             while (!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
-                ClientManager clientManager = new ClientManager(socket, logger);
-                logger.log(Level.INFO, "New connection");
+                ClientManager clientManager = new ClientManager(socket, logger, db);
+                logger.log(Level.INFO, "New connection with IP: "
+                        + socket.getInetAddress().getHostAddress());
                 Thread thread = new Thread(clientManager);
                 thread.start();
             }
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             closeSocket();
             db.exit();
             logger.log(Level.WARNING, e.getMessage());
         }
     }
 
-    private void closeSocket(){
-        try{
+    private void closeSocket() {
+        try {
             if (serverSocket != null) serverSocket.close();
         } catch (IOException e) {
             logger.log(Level.WARNING, e.getMessage());

@@ -1,38 +1,101 @@
-дек. 23, 2023 10:46:01 AM org.example.DataBase.DB newState
-WARNING: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'Groups (id INT PRIMARY KEY AUTO_INCREMENT, Name VARCHAR(255))' at line 1
-дек. 23, 2023 11:01:59 AM org.example.Server runServer
+дек. 23, 2023 1:49:39 PM org.example.Server runServer
 INFO: Server started
-дек. 23, 2023 11:25:32 AM org.example.Server runServer
+дек. 23, 2023 1:49:43 PM org.example.ClientManager <init>
+INFO: Последний is connected
+дек. 23, 2023 1:49:43 PM org.example.Server runServer
+INFO: New connection
+дек. 23, 2023 1:49:43 PM org.example.Server runServer
+INFO: Connection
+InetAddress: /127.0.0.1
+Remote IP: 127.0.0.1
+LocalPort:1400
+дек. 23, 2023 1:51:19 PM org.example.Server runServer
 INFO: Server started
-дек. 23, 2023 11:29:00 AM org.example.Server runServer
+дек. 23, 2023 1:51:22 PM org.example.ClientManager <init>
+INFO: Последний is connected
+дек. 23, 2023 1:51:22 PM org.example.Server runServer
+INFO: New connection with IP:127.0.0.1
+дек. 23, 2023 1:51:26 PM org.example.ClientManager removeClient
+INFO: Последний is disconnected
+дек. 23, 2023 1:51:26 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 23, 2023 2:07:03 PM org.example.Server runServer
 INFO: Server started
-дек. 23, 2023 11:30:43 AM org.example.Server runServer
+дек. 23, 2023 2:08:57 PM org.example.Server runServer
 INFO: Server started
-дек. 23, 2023 11:31:45 AM org.example.Server runServer
+дек. 23, 2023 2:18:47 PM org.example.Server runServer
 INFO: Server started
-дек. 23, 2023 12:15:25 PM org.example.Server runServer
+дек. 23, 2023 2:23:27 PM org.example.Server runServer
 INFO: Server started
-дек. 23, 2023 1:00:29 PM org.example.DataBase.DB newState
-WARNING: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
-дек. 23, 2023 1:00:31 PM org.example.Server runServer
+дек. 23, 2023 2:26:40 PM org.example.Server runServer
 INFO: Server started
-дек. 23, 2023 1:01:55 PM org.example.DataBase.DB newState
-WARNING: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
-дек. 23, 2023 1:01:56 PM org.example.Server runServer
+дек. 23, 2023 2:26:44 PM org.example.DB getUserFromName
+WARNING: No entity found for query
+дек. 23, 2023 2:26:44 PM org.example.ClientManager findUser
+INFO: Последний data not find in DataBase
+дек. 23, 2023 2:26:44 PM org.example.ClientManager findUser
+INFO: Create new User. Username: Последний
+дек. 23, 2023 2:26:44 PM org.example.ClientManager <init>
+INFO: Последний is connected
+дек. 23, 2023 2:26:44 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 23, 2023 2:26:49 PM org.example.ClientManager removeClient
+INFO: Последний is disconnected
+дек. 23, 2023 2:26:49 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 23, 2023 2:28:05 PM org.example.ClientManager findUser
+INFO: Последний data find in DataBase
+дек. 23, 2023 2:28:05 PM org.example.ClientManager <init>
+INFO: Последний is connected
+дек. 23, 2023 2:28:05 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 23, 2023 2:28:38 PM org.example.ClientManager removeClient
+INFO: Последний is disconnected
+дек. 23, 2023 2:28:38 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 23, 2023 2:37:03 PM org.example.Server runServer
 INFO: Server started
-дек. 23, 2023 1:03:33 PM org.example.DataBase.DB newState
-WARNING: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
-дек. 23, 2023 1:03:34 PM org.example.Server runServer
+дек. 23, 2023 2:37:08 PM org.example.ClientManager findUser
+INFO: Последний data find in DataBase
+дек. 23, 2023 2:37:08 PM org.example.ClientManager <init>
+INFO: Последний is connected
+дек. 23, 2023 2:37:08 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 23, 2023 2:37:12 PM org.example.ClientManager removeClient
+INFO: Последний is disconnected
+дек. 23, 2023 2:37:12 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 23, 2023 2:37:46 PM org.example.ClientManager findUser
+INFO: Последний data find in DataBase
+дек. 23, 2023 2:37:46 PM org.example.ClientManager <init>
+INFO: Последний is connected
+дек. 23, 2023 2:37:46 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 23, 2023 2:37:50 PM org.example.ClientManager removeClient
+INFO: Последний is disconnected
+дек. 23, 2023 2:37:50 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 23, 2023 2:38:02 PM org.example.Server runServer
 INFO: Server started
-дек. 23, 2023 1:04:08 PM org.example.DataBase.DB newState
-WARNING: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
-дек. 23, 2023 1:04:09 PM org.example.Server runServer
+дек. 23, 2023 2:38:09 PM org.example.ClientManager findUser
+INFO: Последний data find in DataBase
+дек. 23, 2023 2:38:09 PM org.example.ClientManager <init>
+INFO: Последний is connected
+дек. 23, 2023 2:38:09 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 23, 2023 2:38:11 PM org.example.ClientManager removeClient
+INFO: Последний is disconnected
+дек. 23, 2023 2:38:11 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 23, 2023 2:38:48 PM org.example.Server runServer
 INFO: Server started
-дек. 23, 2023 1:05:36 PM org.example.Server runServer
-INFO: Server started
-дек. 23, 2023 1:06:44 PM org.example.Server runServer
-INFO: Server started
-дек. 23, 2023 1:07:06 PM org.example.Server runServer
-INFO: Server started
-дек. 23, 2023 1:07:43 PM org.example.Server runServer
-INFO: Server started
+дек. 23, 2023 2:38:53 PM org.example.ClientManager findUser
+INFO: Последний data find in DataBase
+дек. 23, 2023 2:38:53 PM org.example.ClientManager <init>
+INFO: Последний is connected
+дек. 23, 2023 2:38:53 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 23, 2023 2:38:55 PM org.example.ClientManager removeClient
+INFO: Последний is disconnected
+дек. 23, 2023 2:38:55 PM org.example.ClientManager run
+WARNING: Connection reset
