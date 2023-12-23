@@ -1,11 +1,11 @@
 package org.example;
 
-import org.example.ChatModels.Contact;
-import org.example.ChatModels.User;
+import org.example.ChatModels.*;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,7 +17,7 @@ public class ClientManager implements Runnable {
     private User user;
     private final Logger logger;
     private final DB db;
-    public final static ArrayList<ClientManager> activeUsers = new ArrayList<>();
+    public final static HashMap<Long, ClientManager> activeUsers = new HashMap<>();
     private static final String DELIMITER = "#%@!&=SEPORATION=!@%#";
 
     public ClientManager(Socket socket, Logger logger, DB db) {
@@ -30,7 +30,7 @@ public class ClientManager implements Runnable {
             String name = bufferedReader.readLine();
 //            TODO Добавить валидацию
             user = findUser(name);
-            activeUsers.add(this);
+            activeUsers.put(user.getId(), this);
             logger.log(Level.INFO, name + " is connected");
             if (!user.getChatsList().isEmpty()) {
 //                TODO Добавить отправку чатов
@@ -78,7 +78,7 @@ public class ClientManager implements Runnable {
     private void handling(String massage) {
         String[] options = massage.split(DELIMITER);
         String contentType = options[0];
-        int chatId = Integer.parseInt(options[1]);
+        long chatId = Long.parseLong(options[1]);
         String payloadData = options[2];
         switch (contentType) {
             case "text" -> sendMessage(chatId, payloadData);
@@ -92,23 +92,27 @@ public class ClientManager implements Runnable {
         }
     }
 
-    private void sendMessage(int chatId, String message) {
-
+    private void sendMessage(long chatId, String message) {
+        Chat chat = db.select(Chat.class, (int) chatId);
+        UsersList users = chat.getUsers();
+        String data = "send_message" + DELIMITER + chatId + DELIMITER + message;
+        groupMessage(users, data);
     }
 
     private void newContact(String userName) {
-        String message = "new_contact" + DELIMITER;
+        String data = "new_contact" + DELIMITER;
         User findUser = db.getUserFromName(userName);
         if (findUser != null) {
             logger.log(Level.INFO, userName + " data find in DataBase");
             Contact contact = new Contact(user, findUser);
             db.create(contact);
-            message += "1" + DELIMITER + contact.getId() + "%" + findUser.getId();
+            data += "1" + DELIMITER + contact.getId() + "%{" + findUser.getId() +
+                    ":" + findUser.getName() + "}";
         } else {
             logger.log(Level.INFO, userName + " data not find in DataBase");
-            message += "0" + DELIMITER + "-";
+            data += "0" + DELIMITER + "-";
         }
-        send(this, message);
+        send(this, data);
     }
 
     private void newGroup(String usersList) {
@@ -116,15 +120,24 @@ public class ClientManager implements Runnable {
     }
 
     private void broadcastMessage(String message) {
-        if (message.replace(user.getName() + ": ", "").charAt(0) == '@') {
-            String destination = message.split(" ")[1].replace("@", "");
-            activeUsers.stream().filter(it -> it.user.getName().equals(destination))
-                    .forEach(client -> send(client, message));
-        } else {
-            for (ClientManager client : activeUsers) {
-                if (!client.user.getName().equals(user.getName())) {
-                    send(client, message);
-                }
+//        if (message.replace(user.getName() + ": ", "").charAt(0) == '@') {
+//            String destination = message.split(" ")[1].replace("@", "");
+//            activeUsers.stream().filter(it -> it.user.getName().equals(destination))
+//                    .forEach(client -> send(client, message));
+//        } else {
+//            for (ClientManager client : activeUsers) {
+//                if (!client.user.getName().equals(user.getName())) {
+//                    send(client, message);
+//                }
+//            }
+//        }
+    }
+
+    private void groupMessage(UsersList users, String message) {
+        for (User u: users){
+            if (!user.getName().equals(u.getName())){
+                ClientManager client = activeUsers.get(u.getId());
+                client.send(client, message);
             }
         }
     }

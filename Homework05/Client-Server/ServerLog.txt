@@ -99,3 +99,27 @@ INFO: New connection with IP: 127.0.0.1
 INFO: Последний is disconnected
 дек. 23, 2023 2:38:55 PM org.example.ClientManager run
 WARNING: Connection reset
+дек. 23, 2023 4:22:46 PM org.example.Server runServer
+INFO: Server started
+дек. 23, 2023 4:22:51 PM org.example.ClientManager findUser
+INFO: Последний data find in DataBase
+дек. 23, 2023 4:22:51 PM org.example.ClientManager <init>
+INFO: Последний is connected
+дек. 23, 2023 4:22:51 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 23, 2023 4:23:07 PM org.example.ClientManager removeClient
+INFO: Последний is disconnected
+дек. 23, 2023 4:23:07 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 23, 2023 5:25:24 PM org.example.Server runServer
+INFO: Server started
+дек. 23, 2023 5:25:29 PM org.example.ClientManager findUser
+INFO: Последний data find in DataBase
+дек. 23, 2023 5:25:29 PM org.example.ClientManager <init>
+INFO: Последний is connected
+дек. 23, 2023 5:25:29 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 23, 2023 5:25:33 PM org.example.ClientManager removeClient
+INFO: Последний is disconnected
+дек. 23, 2023 5:25:33 PM org.example.ClientManager run
+WARNING: Connection reset
