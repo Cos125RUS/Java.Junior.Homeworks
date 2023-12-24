@@ -26,7 +26,7 @@ public class Loader extends Thread {
         Arrays.stream(user.getChatsList().split("%"))
                 .map(Integer::parseInt)
                 .forEach(id -> {
-                    Chat chat = db.select(Chat.class, id);
+                    Chat chat = db.select(Chat.class, id);//Chat не прокатил
                     System.out.println(chat);
 //                  TODO Добавить отправку чатов
                 });

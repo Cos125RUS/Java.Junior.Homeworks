@@ -42,7 +42,7 @@ public class User {
     }
 
     public void updateChatsList() {
-        chatsList = chats.toString();
+        chatsList = chats.toDB();
     }
 
 

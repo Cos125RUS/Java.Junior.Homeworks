@@ -29,12 +29,14 @@ public class UI extends JFrame {
     private JPanel mainWindow;
     private JPanel currentChatPanel;
     private JPanel currentChatWindow;
+    private HashMap<Long, JPanel> activeChatsWindows;
     private SpringLayout currentChatLayout;
     private HashMap<String, JButton> chats;
 
     public UI(App app) {
         super("The Messenger");
         this.app = app;
+        activeChatsWindows = new HashMap<>();
         createMainFrame();
         createLoginWindow();
         baseContainer.add(loginContainer);
@@ -45,6 +47,7 @@ public class UI extends JFrame {
         super("The Messenger");
         this.app = app;
         this.user = user;
+        activeChatsWindows = new HashMap<>();
         createMainFrame();
         if (app.authorization(user.getName())) {
             app.saveUserData(user);

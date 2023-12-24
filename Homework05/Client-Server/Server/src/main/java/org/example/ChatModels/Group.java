@@ -34,7 +34,7 @@ public class Group extends Chat{
     }
 
     public void updateChatsList() {
-        usersList = users.toString();
+        usersList = users.toDB();
     }
 
 //    region GettersAndSetters

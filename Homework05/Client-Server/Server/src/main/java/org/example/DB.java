@@ -71,7 +71,16 @@ public class DB {
                 " add to DataBase (" + object + ")");
     }
 
-    public <T> void delete(Class<T> clazz, int id) {
+    public <T> void update(T object){
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        session.update(object);
+        session.getTransaction().commit();
+        session.close();
+        logger.log(Level.INFO, "Delete data from DataBase " + object);
+    }
+
+    public <T> void delete(Class<T> clazz, long id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.delete(session.get(clazz, id));
