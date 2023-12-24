@@ -883,3 +883,195 @@ INFO: User2 is disconnected
 WARNING: Connection reset
 дек. 24, 2023 7:16:12 PM org.example.ClientManager run
 WARNING: Connection reset
+дек. 24, 2023 7:25:03 PM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 7:27:45 PM org.example.ClientManager findUser
+INFO: User1 data find in DataBase
+дек. 24, 2023 7:27:45 PM org.example.ClientManager <init>
+INFO: User1 is connected
+дек. 24, 2023 7:27:45 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:27:45 PM org.example.ClientManager findUser
+INFO: User2 data find in DataBase
+дек. 24, 2023 7:27:45 PM org.example.ClientManager <init>
+INFO: User2 is connected
+дек. 24, 2023 7:27:45 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:28:04 PM org.example.DB getUserFromName
+WARNING: No entity found for query
+дек. 24, 2023 7:28:04 PM org.example.ClientManager newContact
+INFO: null data not find in DataBase
+дек. 24, 2023 7:28:05 PM org.example.ClientManager removeClient
+INFO: User2 is disconnected
+дек. 24, 2023 7:28:05 PM org.example.ClientManager removeClient
+INFO: User1 is disconnected
+дек. 24, 2023 7:28:05 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 7:28:05 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 7:33:37 PM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 7:33:45 PM org.example.ClientManager findUser
+INFO: User1 data find in DataBase
+дек. 24, 2023 7:33:45 PM org.example.ClientManager <init>
+INFO: User1 is connected
+дек. 24, 2023 7:33:45 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:33:45 PM org.example.ClientManager findUser
+INFO: User2 data find in DataBase
+дек. 24, 2023 7:33:45 PM org.example.ClientManager <init>
+INFO: User2 is connected
+дек. 24, 2023 7:33:45 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:38:43 PM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 7:38:49 PM org.example.ClientManager findUser
+INFO: User1 data find in DataBase
+дек. 24, 2023 7:38:49 PM org.example.ClientManager <init>
+INFO: User1 is connected
+дек. 24, 2023 7:38:49 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:38:49 PM org.example.ClientManager findUser
+INFO: User2 data find in DataBase
+дек. 24, 2023 7:38:49 PM org.example.ClientManager <init>
+INFO: User2 is connected
+дек. 24, 2023 7:38:49 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:39:01 PM org.example.ClientManager newContact
+INFO: User2 data find in DataBase
+дек. 24, 2023 7:39:01 PM org.example.DB getContactFromUsersId
+WARNING: No entity found for query
+дек. 24, 2023 7:39:01 PM org.example.DB create
+INFO: New Contact add to DataBase (Contact{id=17, u1ID=6, u2ID=7, u1=org.example.ChatModels.User@15986dd5, u2=org.example.ChatModels.User@783fd752})
+дек. 24, 2023 7:41:14 PM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 7:41:20 PM org.example.ClientManager findUser
+INFO: User1 data find in DataBase
+дек. 24, 2023 7:41:20 PM org.example.ClientManager <init>
+INFO: User1 is connected
+дек. 24, 2023 7:41:20 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:41:20 PM org.example.ClientManager findUser
+INFO: User2 data find in DataBase
+дек. 24, 2023 7:41:20 PM org.example.ClientManager <init>
+INFO: User2 is connected
+дек. 24, 2023 7:41:20 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:41:28 PM org.example.ClientManager newContact
+INFO: User2 data find in DataBase
+дек. 24, 2023 7:44:06 PM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 7:44:23 PM org.example.DB getUserFromName
+WARNING: No entity found for query
+дек. 24, 2023 7:44:23 PM org.example.ClientManager findUser
+INFO: U1 data not find in DataBase
+дек. 24, 2023 7:44:23 PM org.example.DB create
+INFO: New User add to DataBase (org.example.ChatModels.User@24dd44f9)
+дек. 24, 2023 7:44:23 PM org.example.ClientManager findUser
+INFO: Create new User. Username: U1
+дек. 24, 2023 7:44:23 PM org.example.ClientManager <init>
+INFO: U1 is connected
+дек. 24, 2023 7:44:23 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:44:23 PM org.example.DB getUserFromName
+WARNING: No entity found for query
+дек. 24, 2023 7:44:23 PM org.example.ClientManager findUser
+INFO: U2 data not find in DataBase
+дек. 24, 2023 7:44:23 PM org.example.DB create
+INFO: New User add to DataBase (org.example.ChatModels.User@54c425b1)
+дек. 24, 2023 7:44:23 PM org.example.ClientManager findUser
+INFO: Create new User. Username: U2
+дек. 24, 2023 7:44:23 PM org.example.ClientManager <init>
+INFO: U2 is connected
+дек. 24, 2023 7:44:23 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:44:34 PM org.example.ClientManager newContact
+INFO: U1 data find in DataBase
+дек. 24, 2023 7:44:34 PM org.example.DB getContactFromUsersId
+WARNING: No entity found for query
+дек. 24, 2023 7:44:34 PM org.example.DB create
+INFO: New Contact add to DataBase (Contact{id=18, u1ID=9, u2ID=8, u1=org.example.ChatModels.User@54c425b1, u2=org.example.ChatModels.User@19a8438f})
+дек. 24, 2023 7:46:47 PM org.example.ClientManager removeClient
+INFO: U2 is disconnected
+дек. 24, 2023 7:46:47 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 7:46:47 PM org.example.ClientManager removeClient
+INFO: U1 is disconnected
+дек. 24, 2023 7:46:47 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 7:48:05 PM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 7:48:08 PM org.example.ClientManager findUser
+INFO: U1 data find in DataBase
+дек. 24, 2023 7:48:08 PM org.example.ClientManager <init>
+INFO: U1 is connected
+дек. 24, 2023 7:48:08 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:48:08 PM org.example.ClientManager findUser
+INFO: U2 data find in DataBase
+дек. 24, 2023 7:48:08 PM org.example.ClientManager <init>
+INFO: U2 is connected
+дек. 24, 2023 7:48:08 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:48:29 PM org.example.ClientManager newContact
+INFO: U2 data find in DataBase
+дек. 24, 2023 7:48:29 PM org.example.DB getContactFromUsersId
+WARNING: No entity found for query
+дек. 24, 2023 7:48:29 PM org.example.DB create
+INFO: New Contact add to DataBase (Contact{id=19, u1ID=8, u2ID=9, u1=org.example.ChatModels.User@668cc9a2, u2=org.example.ChatModels.User@389ae9b2})
+дек. 24, 2023 7:50:55 PM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 7:51:00 PM org.example.ClientManager findUser
+INFO: U1 data find in DataBase
+дек. 24, 2023 7:51:00 PM org.example.ClientManager <init>
+INFO: U1 is connected
+дек. 24, 2023 7:51:00 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:51:00 PM org.example.ClientManager findUser
+INFO: U2 data find in DataBase
+дек. 24, 2023 7:51:00 PM org.example.ClientManager <init>
+INFO: U2 is connected
+дек. 24, 2023 7:51:00 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:51:12 PM org.example.ClientManager newContact
+INFO: U1 data find in DataBase
+дек. 24, 2023 7:52:16 PM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 7:52:30 PM org.example.DB getUserFromName
+WARNING: No entity found for query
+дек. 24, 2023 7:52:30 PM org.example.ClientManager findUser
+INFO: aaa data not find in DataBase
+дек. 24, 2023 7:52:31 PM org.example.DB create
+INFO: New User add to DataBase (org.example.ChatModels.User@24dd44f9)
+дек. 24, 2023 7:52:31 PM org.example.ClientManager findUser
+INFO: Create new User. Username: aaa
+дек. 24, 2023 7:52:31 PM org.example.ClientManager <init>
+INFO: aaa is connected
+дек. 24, 2023 7:52:31 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:52:31 PM org.example.DB getUserFromName
+WARNING: No entity found for query
+дек. 24, 2023 7:52:31 PM org.example.ClientManager findUser
+INFO: bbb data not find in DataBase
+дек. 24, 2023 7:52:31 PM org.example.DB create
+INFO: New User add to DataBase (org.example.ChatModels.User@54c425b1)
+дек. 24, 2023 7:52:31 PM org.example.ClientManager findUser
+INFO: Create new User. Username: bbb
+дек. 24, 2023 7:52:31 PM org.example.ClientManager <init>
+INFO: bbb is connected
+дек. 24, 2023 7:52:31 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 7:52:41 PM org.example.ClientManager newContact
+INFO: aaa data find in DataBase
+дек. 24, 2023 7:52:41 PM org.example.DB getContactFromUsersId
+WARNING: No entity found for query
+дек. 24, 2023 7:52:41 PM org.example.DB create
+INFO: New Contact add to DataBase (Contact{id=20, u1ID=11, u2ID=10, u1=org.example.ChatModels.User@54c425b1, u2=org.example.ChatModels.User@76896b3c})
+дек. 24, 2023 7:53:04 PM org.example.ClientManager removeClient
+INFO: aaa is disconnected
+дек. 24, 2023 7:53:04 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 7:53:04 PM org.example.ClientManager removeClient
+INFO: bbb is disconnected
+дек. 24, 2023 7:53:04 PM org.example.ClientManager run
+WARNING: Connection reset

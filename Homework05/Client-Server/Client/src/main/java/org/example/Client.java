@@ -1,11 +1,11 @@
 package org.example;
 
 import org.example.ChatModels.Chat;
+import org.example.ChatModels.User;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

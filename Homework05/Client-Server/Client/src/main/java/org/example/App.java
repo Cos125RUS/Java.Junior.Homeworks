@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.ChatModels.Chat;
 import org.example.ChatModels.Contact;
+import org.example.ChatModels.User;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -104,12 +105,13 @@ public class App {
     private void createContact(long id, String payload) {
         if (id == 0){
 //            TODO контакт не найден
+        } else {
+            String[] userData = payload.split(":");
+            User chatMember = new User(Long.parseLong(userData[0]), userData[1]);
+            Contact contact = new Contact(id, chatMember);
+            chats.put(id, contact);
+            ui.createChatInChatList(contact);
         }
-        String[] userData = payload.split(":");
-        User chatMember = new User(Long.parseLong(userData[0]), userData[1]);
-        Contact contact = new Contact(id, chatMember);
-        chats.put(id, contact);
-        ui.createChatInChatList(contact);
     }
 
     public void printMessage(String message) {

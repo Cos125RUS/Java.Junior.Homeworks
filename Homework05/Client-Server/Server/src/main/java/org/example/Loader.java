@@ -23,7 +23,7 @@ public class Loader extends Thread {
 
     @Override
     public void run() {
-        Arrays.stream(user.getChatsList().split(":"))
+        Arrays.stream(user.getChatsList().split("%"))
                 .map(Integer::parseInt)
                 .forEach(id -> {
                     Chat chat = db.select(Chat.class, id);

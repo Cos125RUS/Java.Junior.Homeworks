@@ -128,19 +128,21 @@ public class ClientManager implements Runnable {
 
     private void newContact(String userName) {
         String data = "new_contact" + DELIMITER;
-        User findUser = db.getUserFromName(userName);
-        if (findUser != null) {
+        User searchUser = db.getUserFromName(userName);
+        if (searchUser != null) {
             logger.log(Level.INFO, userName + " data find in DataBase");
-            Contact contact = db.getContactFromUsersId(user.getId(), findUser.getId());
+            Contact contact = db.getContactFromUsersId(user.getId(), searchUser.getId());
             if (contact == null) {
-                contact = new Contact(user, findUser);
+                contact = new Contact(user, searchUser);
                 db.create(contact);
+                user.addChat(contact);
+                searchUser.addChat(contact);
             }
             data += contact.getId() + DELIMITER;
-            String dataUser1 = data + findUser.getId() + ":" + findUser.getName();
+            String dataUser1 = data + searchUser.getId() + ":" + searchUser.getName();
             send(this, dataUser1);
             String dataUser2 = data + user.getId() + ":" + user.getName();
-            send(activeUsers.get(findUser.getId()), dataUser2);
+            send(activeUsers.get(searchUser.getId()), dataUser2);
         } else {
             logger.log(Level.INFO, userName + " data not find in DataBase");
             data += "0" + DELIMITER + "-";
@@ -169,6 +171,7 @@ public class ClientManager implements Runnable {
             for (User u : users) {
                 ClientManager client = activeUsers.get(u.getId());
                 client.send(client, data.toString());
+                u.addChat(group);
             }
         } else {
             logger.log(Level.INFO, "New group don't create");

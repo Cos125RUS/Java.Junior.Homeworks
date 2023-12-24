@@ -21,6 +21,7 @@ public class User {
     private static long nextId = 1;
 
     public User() {
+        chats = new ChatsList();
     }
 
     public User(String name) {

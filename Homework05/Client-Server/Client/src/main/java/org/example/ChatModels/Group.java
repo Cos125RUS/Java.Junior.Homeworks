@@ -1,7 +1,5 @@
 package org.example.ChatModels;
 
-import org.example.User;
-
 import java.util.List;
 
 public class Group extends Chat{

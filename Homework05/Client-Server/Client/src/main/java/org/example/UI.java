@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.ChatModels.Chat;
-import org.example.ChatModels.Contact;
+import org.example.ChatModels.User;
 
 import javax.swing.*;
 import java.awt.*;
