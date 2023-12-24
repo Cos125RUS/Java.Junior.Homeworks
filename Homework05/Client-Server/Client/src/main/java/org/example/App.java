@@ -105,6 +105,7 @@ public class App {
     private void createContact(long id, String payload) {
         if (id == 0){
 //            TODO контакт не найден
+            ui.notFoundContact();
         } else {
             String[] userData = payload.split(":");
             User chatMember = new User(Long.parseLong(userData[0]), userData[1]);
@@ -114,13 +115,9 @@ public class App {
         }
     }
 
-    public void printMessage(String message) {
-        ui.print(message);
-    }
-
     public void printMessage(long chatId, String message) {
 //        TODO отправка сообщений в фоновый чат
-        ui.print(message);
+        ui.addMessage(chatId, message);
     }
 
     public void sendMessage(long chatId, String message) {

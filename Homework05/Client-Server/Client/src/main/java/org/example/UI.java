@@ -29,14 +29,14 @@ public class UI extends JFrame {
     private JPanel mainWindow;
     private JPanel currentChatPanel;
     private JPanel currentChatWindow;
-    private HashMap<Long, JPanel> activeChatsWindows;
+    private HashMap<Long, ChatContainer> activeChatsContainer;
     private SpringLayout currentChatLayout;
     private HashMap<String, JButton> chats;
 
     public UI(App app) {
         super("The Messenger");
         this.app = app;
-        activeChatsWindows = new HashMap<>();
+        activeChatsContainer = new HashMap<>();
         createMainFrame();
         createLoginWindow();
         baseContainer.add(loginContainer);
@@ -47,7 +47,7 @@ public class UI extends JFrame {
         super("The Messenger");
         this.app = app;
         this.user = user;
-        activeChatsWindows = new HashMap<>();
+        activeChatsContainer = new HashMap<>();
         createMainFrame();
         if (app.authorization(user.getName())) {
             app.saveUserData(user);
@@ -131,7 +131,7 @@ public class UI extends JFrame {
         });
         JMenuItem newGroup = new JMenuItem("Новая группа");
         newGroup.addActionListener(action -> {
-
+//TODO Создание группы
         });
         JMenuItem setting = new JMenuItem("Настройки");
         setting.addActionListener(action -> {
@@ -166,7 +166,13 @@ public class UI extends JFrame {
         });
         chatsField.add(chatButton);
         chats.put(chat.getName(), chatButton);
+        createChatContainer(chat);
         chatsField.setVisible(true);
+    }
+
+    private void createChatContainer(Chat chat) {
+        ChatContainer chatContainer = new ChatContainer(app, chat.getChatID(), WIDTH, HEIGHT);
+        activeChatsContainer.put(chat.getChatID(), chatContainer);
     }
 
     private void createMainWindow() {
@@ -253,15 +259,25 @@ public class UI extends JFrame {
         currentChatWindow.setVisible(true);
     }
 
+    public void addMessage(long chatId, String message) {
+        print(message); //Заглушка для отображения в активный чат
+        ChatContainer chatContainer = activeChatsContainer.get(chatId);
+        chatContainer.addMessage(message);
+    }
+
     private Container getMessageContainer(String message) {
         Container messageContainer = new Container();
         messageContainer.setPreferredSize(new Dimension(200, 50));
         JPanel messageBox = new JPanel(new BorderLayout());
-        messageBox.setSize(200,50);
+        messageBox.setSize(200, 50);
         messageBox.setBackground(Color.CYAN);
         messageContainer.add(messageBox);
         JLabel newMessage = new JLabel(message);
         messageBox.add(newMessage);
         return messageContainer;
+    }
+
+    public void notFoundContact() {
+        JOptionPane.showMessageDialog(null, "Пользователь не найден");
     }
 }

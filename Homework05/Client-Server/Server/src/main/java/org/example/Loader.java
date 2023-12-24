@@ -25,6 +25,11 @@ public class Loader extends Thread {
 
     @Override
     public void run() {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         List<Integer> chatsId = Arrays.stream(user.getChatsList().split("%"))
                 .map(Integer::parseInt).toList();
         for (int id : chatsId) {
@@ -37,7 +42,7 @@ public class Loader extends Thread {
                 else memberId = contact.getU1ID();
                 User member = db.select(User.class, memberId);
                 data += member.getId() + ":" + member.getName();
-//                client.send(data); TODO Доработать приём на стороне клиента
+                client.send(data); //TODO Доработать приём на стороне клиента
             } catch (UnknownEntityTypeException e) {
                 Group group = db.select(Group.class, id);
                 String data = "new_group" + DELIMITER + group.getId() + DELIMITER;

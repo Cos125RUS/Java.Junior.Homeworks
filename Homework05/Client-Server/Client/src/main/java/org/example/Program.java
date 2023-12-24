@@ -4,9 +4,9 @@ public class Program {
 
     public static void main(String[] args) {
 //        new App();
-        new App("1");
-        new App("2");
-        new App("3");
+        new App("User1");
+        new App("User2");
+        new App("User3");
     }
 
 }
