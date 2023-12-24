@@ -12,8 +12,8 @@ public class Program {
     public static void main(String[] args) {
 //        new App();
 //        new App("111");
-        new App("222");
-        new App("333");
+        new App("User1");
+        new App("User2");
     }
 
 }

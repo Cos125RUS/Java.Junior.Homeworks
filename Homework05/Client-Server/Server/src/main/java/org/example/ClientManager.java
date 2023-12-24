@@ -128,8 +128,8 @@ public class ClientManager implements Runnable {
         if (findUser != null) {
             logger.log(Level.INFO, userName + " data find in DataBase");
             Contact contact = new Contact(user, findUser);
-            data += contact.getId() + DELIMITER;
             db.create(contact); //TODO Добавить загрузку контакта из БД
+            data += contact.getId() + DELIMITER;
             String dataUser1 = data + findUser.getId() + ":" + findUser.getName();
             send(this, dataUser1);
             String dataUser2 = data + user.getId() + ":" + user.getName();
