@@ -21,16 +21,11 @@ public class UI extends JFrame {
     private Container chatsListContainer;
     private Container mainChatContainer;
     private Container currentChatContainer;
-    private Container chatWindowContainer;
-    private Container lastMessage;
     private JPanel loginWindow;
     private JPanel chatListWindow;
     private JPanel chatsField;
     private JPanel mainWindow;
-    private JPanel currentChatPanel;
-    private JPanel currentChatWindow;
     private HashMap<Long, ChatContainer> activeChatsContainer;
-    private SpringLayout currentChatLayout;
     private HashMap<String, JButton> chats;
 
     public UI(App app) {
@@ -161,7 +156,7 @@ public class UI extends JFrame {
         JButton chatButton = new JButton(chat.getName());
         chatButton.setPreferredSize(new Dimension(WIDTH / 3, 50));
         chatButton.addActionListener(action -> {
-            mainWindow.remove(currentChatPanel);
+            mainWindow.remove(currentChatContainer);
             showChat(chat);
         });
         chatsField.add(chatButton);
@@ -189,92 +184,23 @@ public class UI extends JFrame {
         mainBar.add(windowSetting, BorderLayout.EAST);
         mainBar.add(userName, BorderLayout.WEST);
         mainWindow.add(mainBar, BorderLayout.NORTH);
-        currentChatPanel = new JPanel();
-        currentChatPanel.setVisible(false);
-        mainWindow.add(currentChatPanel, BorderLayout.CENTER);
+        currentChatContainer = new JPanel();
+        currentChatContainer.setVisible(false);
+        mainWindow.add(currentChatContainer, BorderLayout.CENTER);
         mainChatContainer.add(mainWindow);
     }
 
     private void showChat(Chat chat) {
 //        TODO загрузка истории чата
         mainWindow.setVisible(false);
-        currentChatContainer = new Container();
-        currentChatContainer.setPreferredSize(new Dimension(WIDTH / 3 * 2, HEIGHT - 60));
-        currentChatLayout = new SpringLayout();
-        currentChatPanel = new JPanel(new BorderLayout());
-        currentChatPanel.setSize(WIDTH / 3 * 2, HEIGHT - 60);
-        currentChatPanel.setBackground(Color.getHSBColor(100, 100, 255));
-        chatWindowContainer = new Container();
-        chatWindowContainer.setPreferredSize(new Dimension(WIDTH / 3 * 2, HEIGHT - 90));
-        currentChatWindow = new JPanel(currentChatLayout);
-        currentChatWindow.setSize(WIDTH / 3 * 2, HEIGHT - 90);
-        currentChatWindow.setBackground(Color.YELLOW);
-        currentChatPanel.add(chatWindowContainer, BorderLayout.CENTER);
-        chatWindowContainer.add(currentChatWindow);
-        lastMessage = getMessageContainer("");
-        currentChatLayout.putConstraint(SpringLayout.NORTH, lastMessage,
-                -((int) lastMessage.getPreferredSize().getHeight()), SpringLayout.NORTH, currentChatWindow);
-        currentChatLayout.putConstraint(SpringLayout.WEST, lastMessage, 0, SpringLayout.WEST, currentChatWindow);
-        JMenuBar entryBar = getEntryBar(chat);
-        currentChatPanel.add(entryBar, BorderLayout.SOUTH);
-        currentChatContainer.add(currentChatPanel);
+        currentChatContainer = activeChatsContainer.get(chat.getChatID());
         mainWindow.add(currentChatContainer, BorderLayout.CENTER);
         mainWindow.setVisible(true);
     }
 
-    private JMenuBar getEntryBar(Chat chat) {
-        JMenuBar entryBar = new JMenuBar();
-        entryBar.setPreferredSize(new Dimension(WIDTH / 3 * 2 - 11, 30));
-        JTextField entryField = new JTextField();
-        entryBar.add(entryField);
-        JButton sendButton = new JButton(">>");
-        sendButton.addActionListener(action -> {
-            String message = entryField.getText();
-            app.sendMessage(chat.getChatID(), message);
-            currentChatWindow.setVisible(false);
-            Container messageContainer = getMessageContainer(message);
-            currentChatWindow.add(messageContainer);
-            currentChatLayout.putConstraint(SpringLayout.NORTH, messageContainer,
-                    (int) messageContainer.getPreferredSize().getHeight() + 15,
-                    SpringLayout.NORTH, lastMessage);
-            currentChatLayout.putConstraint(SpringLayout.EAST, messageContainer, -15,
-                    SpringLayout.EAST, currentChatWindow);
-            lastMessage = messageContainer;
-            currentChatWindow.setVisible(true);
-        });
-        entryBar.add(sendButton);
-        return entryBar;
-    }
-
-    public void print(String message) {
-        currentChatWindow.setVisible(false);
-        Container messageContainer = getMessageContainer(message);
-        currentChatWindow.add(messageContainer);
-        currentChatLayout.putConstraint(SpringLayout.NORTH, messageContainer,
-                (int) messageContainer.getPreferredSize().getHeight() + 15,
-                SpringLayout.NORTH, lastMessage);
-        currentChatLayout.putConstraint(SpringLayout.WEST, messageContainer, 15,
-                SpringLayout.WEST, currentChatWindow);
-        lastMessage = messageContainer;
-        currentChatWindow.setVisible(true);
-    }
-
     public void addMessage(long chatId, String message) {
-        print(message); //Заглушка для отображения в активный чат
         ChatContainer chatContainer = activeChatsContainer.get(chatId);
         chatContainer.addMessage(message);
-    }
-
-    private Container getMessageContainer(String message) {
-        Container messageContainer = new Container();
-        messageContainer.setPreferredSize(new Dimension(200, 50));
-        JPanel messageBox = new JPanel(new BorderLayout());
-        messageBox.setSize(200, 50);
-        messageBox.setBackground(Color.CYAN);
-        messageContainer.add(messageBox);
-        JLabel newMessage = new JLabel(message);
-        messageBox.add(newMessage);
-        return messageContainer;
     }
 
     public void notFoundContact() {

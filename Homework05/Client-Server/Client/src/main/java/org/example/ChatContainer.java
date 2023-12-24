@@ -8,10 +8,10 @@ public class ChatContainer extends Container {
     private final long id;
     private final int width;
     private final int height;
-    private JPanel chatWindow;
-    private JPanel chatPanel;
-    private SpringLayout chatLayout;
-    private Container chatWindowContainer;
+    private final JPanel chatWindow;
+    private final JPanel chatPanel;
+    private final SpringLayout chatLayout;
+    private final Container chatWindowContainer;
     private Container lastMessage;
 
 
@@ -22,21 +22,17 @@ public class ChatContainer extends Container {
         this.height = height;
         lastMessage = new Container();
         chatWindowContainer = new Container();
-        chatPanel = new JPanel();
-        chatWindow = new JPanel();
+        chatPanel = new JPanel(new BorderLayout());
         chatLayout = new SpringLayout();
+        chatWindow = new JPanel(chatLayout);
         create();
     }
 
     private void create() {
         setPreferredSize(new Dimension(width, height - 60));
-        chatLayout = new SpringLayout();
-        chatPanel = new JPanel(new BorderLayout());
         chatPanel.setSize(width, height - 60);
         chatPanel.setBackground(Color.getHSBColor(100, 100, 255));
-        chatWindowContainer = new Container();
         chatWindowContainer.setPreferredSize(new Dimension(width, height - 90));
-        chatWindow = new JPanel(chatLayout);
         chatWindow.setSize(width, height - 90);
         chatWindow.setBackground(Color.YELLOW);
         chatPanel.add(chatWindowContainer, BorderLayout.CENTER);
@@ -87,6 +83,7 @@ public class ChatContainer extends Container {
     }
 
     public void addMessage(String message) {
+        chatWindow.setVisible(false);
         Container messageContainer = getMessageContainer(message);
         chatWindow.add(messageContainer);
         chatLayout.putConstraint(SpringLayout.NORTH, messageContainer,
@@ -95,5 +92,6 @@ public class ChatContainer extends Container {
         chatLayout.putConstraint(SpringLayout.WEST, messageContainer, 15,
                 SpringLayout.WEST, chatWindow);
         lastMessage = messageContainer;
+        chatWindow.setVisible(true);
     }
 }
