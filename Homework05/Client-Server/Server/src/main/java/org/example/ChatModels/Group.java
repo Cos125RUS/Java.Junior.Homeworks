@@ -55,6 +55,13 @@ public class Group extends Chat{
         super.setId(id);
     }
 
+    public String getUsersList() {
+        return usersList;
+    }
+
+    public void setUsersList(String usersList) {
+        this.usersList = usersList;
+    }
 //    endregion
 
 

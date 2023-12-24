@@ -111,9 +111,13 @@ public class ClientManager implements Runnable {
 
     private void sendMessageToGroup(long chatId, String message){
         Chat chat = getChat(Group.class, chatId);
-        UsersList users = chat.getUsers();
-
-
+        Group group = (Group) chat;
+        UsersList users = new UsersList();
+        String[] usersList = group.getUsersList().split("%");
+        for (String userId : usersList){
+            User findUser = db.select(User.class, Long.parseLong(userId));
+            users.add(findUser);
+        }
         sendMessage(users, chatId, message);
     }
 
