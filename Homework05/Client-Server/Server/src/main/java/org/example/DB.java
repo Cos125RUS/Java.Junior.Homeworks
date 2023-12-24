@@ -105,4 +105,22 @@ public class DB {
         session.close();
         return user;
     }
+
+    public Contact getContactFromUsersId(long user1, long user2) {
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Contact contact = null;
+        try {
+            contact = session.createQuery("from Contact where user1 = :user1 and user2 = :user2",
+                            Contact.class)
+                    .setParameter("user1", user1)
+                    .setParameter("user2", user2)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            logger.log(Level.WARNING, e.getMessage());
+        }
+        session.getTransaction().commit();
+        session.close();
+        return contact;
+    }
 }

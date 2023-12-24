@@ -94,11 +94,11 @@ public class ClientManager implements Runnable {
         }
     }
 
-    private Chat getChat(Class<? extends Chat> clazz, long chatId){
+    private Chat getChat(Class<? extends Chat> clazz, long chatId) {
         return db.select(clazz, chatId);
     }
 
-    private void sendMessageToContact(long chatId, String message){
+    private void sendMessageToContact(long chatId, String message) {
         Chat chat = getChat(Contact.class, chatId);
         Contact contact = (Contact) chat;
         User u1 = db.select(User.class, contact.getU1ID());
@@ -109,12 +109,12 @@ public class ClientManager implements Runnable {
         sendMessage(users, chatId, message);
     }
 
-    private void sendMessageToGroup(long chatId, String message){
+    private void sendMessageToGroup(long chatId, String message) {
         Chat chat = getChat(Group.class, chatId);
         Group group = (Group) chat;
         UsersList users = new UsersList();
         String[] usersList = group.getUsersList().split("%");
-        for (String userId : usersList){
+        for (String userId : usersList) {
             User findUser = db.select(User.class, Long.parseLong(userId));
             users.add(findUser);
         }
@@ -131,8 +131,11 @@ public class ClientManager implements Runnable {
         User findUser = db.getUserFromName(userName);
         if (findUser != null) {
             logger.log(Level.INFO, userName + " data find in DataBase");
-            Contact contact = new Contact(user, findUser);
-            db.create(contact); //TODO Добавить загрузку контакта из БД
+            Contact contact = db.getContactFromUsersId(user.getId(), findUser.getId());
+            if (contact == null) {
+                contact = new Contact(user, findUser);
+                db.create(contact);
+            }
             data += contact.getId() + DELIMITER;
             String dataUser1 = data + findUser.getId() + ":" + findUser.getName();
             send(this, dataUser1);
