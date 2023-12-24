@@ -120,7 +120,7 @@ public class DB {
         session.beginTransaction();
         Contact contact = null;
         try {
-            contact = session.createQuery("from Contact where user1 = :user1 and user2 = :user2",
+            contact = session.createQuery("from Contact where (user1 = :user1 and user2 = :user2) or (user1 = :user2 and user2 = :user1)",
                             Contact.class)
                     .setParameter("user1", user1)
                     .setParameter("user2", user2)

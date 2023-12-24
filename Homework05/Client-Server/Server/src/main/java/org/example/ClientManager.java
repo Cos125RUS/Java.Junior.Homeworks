@@ -35,7 +35,7 @@ public class ClientManager implements Runnable {
             logger.log(Level.INFO, name + " is connected");
             if (!user.getChatsList().isEmpty()) {
 //                TODO Добавить отправку чатов
-//                new Loader(user, db, logger, bufferedWriter).start();
+                new Loader(user, db, this).start();
             }
         } catch (IOException e) {
             closeEverything(socket, bufferedReader, bufferedWriter);
@@ -214,6 +214,10 @@ public class ClientManager implements Runnable {
             closeEverything(socket, bufferedReader, bufferedWriter);
             logger.log(Level.WARNING, e.getMessage());
         }
+    }
+
+    public void send (String message) {
+        send(this, message);
     }
 
 
