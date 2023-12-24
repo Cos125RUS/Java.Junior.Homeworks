@@ -82,8 +82,8 @@ public class ClientManager implements Runnable {
         long chatId = Long.parseLong(options[1]);
         String payloadData = options[2];
         switch (contentType) {
-            case "text" -> sendMessage(Contact.class, chatId, payloadData);
-            case "group" -> sendMessage(Group.class, chatId, payloadData);
+            case "text" -> sendMessageToContact(chatId, payloadData);
+            case "group" -> sendMessageToGroup(chatId, payloadData);
             case "find" -> newContact(payloadData);
             case "create" -> newGroup(payloadData);
             case "media" -> {
@@ -94,10 +94,30 @@ public class ClientManager implements Runnable {
         }
     }
 
-    private void sendMessage(Class<? extends Chat> clazz, long chatId, String message) {
-        int id = (int) chatId;
-        Chat chat = db.select(clazz, id);
+    private Chat getChat(Class<? extends Chat> clazz, long chatId){
+        return db.select(clazz, chatId);
+    }
+
+    private void sendMessageToContact(long chatId, String message){
+        Chat chat = getChat(Contact.class, chatId);
+        Contact contact = (Contact) chat;
+        User u1 = db.select(User.class, contact.getU1ID());
+        User u2 = db.select(User.class, contact.getU2ID());
+        UsersList users = new UsersList();
+        users.add(u1);
+        users.add(u2);
+        sendMessage(users, chatId, message);
+    }
+
+    private void sendMessageToGroup(long chatId, String message){
+        Chat chat = getChat(Group.class, chatId);
         UsersList users = chat.getUsers();
+
+
+        sendMessage(users, chatId, message);
+    }
+
+    private void sendMessage(UsersList users, long chatId, String message) {
         String data = "send_message" + DELIMITER + chatId + DELIMITER + message;
         groupMessage(users, data);
     }
@@ -109,7 +129,7 @@ public class ClientManager implements Runnable {
             logger.log(Level.INFO, userName + " data find in DataBase");
             Contact contact = new Contact(user, findUser);
             data += contact.getId() + DELIMITER;
-//            db.create(contact); //TODO Добавить загрузку контакта из БД
+            db.create(contact); //TODO Добавить загрузку контакта из БД
             String dataUser1 = data + findUser.getId() + ":" + findUser.getName();
             send(this, dataUser1);
             String dataUser2 = data + user.getId() + ":" + user.getName();

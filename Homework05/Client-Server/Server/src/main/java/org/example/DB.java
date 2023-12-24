@@ -81,7 +81,7 @@ public class DB {
                 " by id: " + id);
     }
 
-    public <T> T select(Class<T> clazz, int id) {
+    public <T> T select(Class<T> clazz, long id) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         T object = session.get(clazz, id);

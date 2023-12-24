@@ -34,7 +34,7 @@ public class Contact extends Chat {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
         super.setId(id);
     }
