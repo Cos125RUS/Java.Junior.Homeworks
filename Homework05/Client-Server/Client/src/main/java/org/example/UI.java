@@ -15,6 +15,7 @@ public class UI extends JFrame {
     private static final int POS_Y = 100;
 
     private final App app;
+    private User user;
     private Container baseContainer;
     private Container loginContainer;
     private Container chatsListContainer;
@@ -43,6 +44,7 @@ public class UI extends JFrame {
     public UI(App app, User user) {
         super("The Messenger");
         this.app = app;
+        this.user = user;
         createMainFrame();
         if (app.authorization(user.getName())) {
             app.saveUserData(user);
@@ -91,6 +93,7 @@ public class UI extends JFrame {
         loginButton.addActionListener(action -> {
             String login = loginField.getText();
             if (app.authorization(login)) {
+                user = app.getUser();
                 loginWindow.setVisible(false);
                 baseContainer.remove(loginWindow);
                 authorization();
@@ -121,7 +124,7 @@ public class UI extends JFrame {
         newContact.addActionListener(action -> {
             String contact = JOptionPane.showInputDialog(this, "Введите имя контакта",
                     "Новый контакт");
-            createChatInChatList(new Contact(12L, new User(contact)));
+            app.newContact(contact);
         });
         JMenuItem newGroup = new JMenuItem("Новая группа");
         newGroup.addActionListener(action -> {
@@ -148,12 +151,9 @@ public class UI extends JFrame {
         chatListWindow.add(chatsField, BorderLayout.CENTER);
         List<Chat> chats = app.getChats();
         chats.forEach(this::createChatInChatList);
-        createChatInChatList(new Contact(12L, new User("Contact01")));
-        createChatInChatList(new Contact(12L, new User("Contact02")));
-        createChatInChatList(new Contact(12L, new User("Contact03")));
     }
 
-    private void createChatInChatList(Chat chat) {
+    public void createChatInChatList(Chat chat) {
         chatsField.setVisible(false);
         JButton chatButton = new JButton(chat.getName());
         chatButton.setPreferredSize(new Dimension(WIDTH / 3, 50));
@@ -176,7 +176,9 @@ public class UI extends JFrame {
         mainBar.setSize(30, (int) mainWindow.getSize().getHeight());
         mainBar.setLayout(new BorderLayout());
         JMenu windowSetting = new JMenu("...");
+        JLabel userName = new JLabel(user.getName());
         mainBar.add(windowSetting, BorderLayout.EAST);
+        mainBar.add(userName, BorderLayout.WEST);
         mainWindow.add(mainBar, BorderLayout.NORTH);
         currentChatPanel = new JPanel();
         currentChatPanel.setVisible(false);
@@ -204,14 +206,14 @@ public class UI extends JFrame {
         currentChatLayout.putConstraint(SpringLayout.NORTH, lastMessage,
                 -((int) lastMessage.getPreferredSize().getHeight()), SpringLayout.NORTH, currentChatWindow);
         currentChatLayout.putConstraint(SpringLayout.WEST, lastMessage, 0, SpringLayout.WEST, currentChatWindow);
-        JMenuBar entryBar = getEntryBar();
+        JMenuBar entryBar = getEntryBar(chat);
         currentChatPanel.add(entryBar, BorderLayout.SOUTH);
         currentChatContainer.add(currentChatPanel);
         mainWindow.add(currentChatContainer, BorderLayout.CENTER);
         mainWindow.setVisible(true);
     }
 
-    private JMenuBar getEntryBar() {
+    private JMenuBar getEntryBar(Chat chat) {
         JMenuBar entryBar = new JMenuBar();
         entryBar.setPreferredSize(new Dimension(WIDTH / 3 * 2 - 11, 30));
         JTextField entryField = new JTextField();
@@ -219,7 +221,7 @@ public class UI extends JFrame {
         JButton sendButton = new JButton(">>");
         sendButton.addActionListener(action -> {
             String message = entryField.getText();
-            app.sendMessage(message);
+            app.sendMessage(chat.getChatID(), message);
             currentChatWindow.setVisible(false);
             Container messageContainer = getMessageContainer(message);
             currentChatWindow.add(messageContainer);

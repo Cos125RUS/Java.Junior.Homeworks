@@ -123,3 +123,423 @@ INFO: New connection with IP: 127.0.0.1
 INFO: Последний is disconnected
 дек. 23, 2023 5:25:33 PM org.example.ClientManager run
 WARNING: Connection reset
+дек. 23, 2023 10:18:58 PM org.example.Server runServer
+INFO: Server started
+дек. 23, 2023 10:19:02 PM org.example.ClientManager findUser
+INFO: Последний data find in DataBase
+дек. 23, 2023 10:19:02 PM org.example.ClientManager <init>
+INFO: Последний is connected
+дек. 23, 2023 10:19:02 PM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 23, 2023 10:19:06 PM org.example.ClientManager removeClient
+INFO: Последний is disconnected
+дек. 23, 2023 10:19:06 PM org.example.ClientManager run
+WARNING: Connection reset
+дек. 23, 2023 10:19:16 PM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 8:46:54 AM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 8:50:08 AM org.example.DB getUserFromName
+WARNING: No entity found for query
+дек. 24, 2023 8:50:08 AM org.example.ClientManager findUser
+INFO: 111 data not find in DataBase
+дек. 24, 2023 8:50:08 AM org.example.DB create
+INFO: New User add to DataBase (org.example.ChatModels.User@467045c4)
+дек. 24, 2023 8:50:08 AM org.example.ClientManager findUser
+INFO: Create new User. Username: 111
+дек. 24, 2023 8:50:08 AM org.example.ClientManager <init>
+INFO: 111 is connected
+дек. 24, 2023 8:50:08 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:50:08 AM org.example.DB getUserFromName
+WARNING: No entity found for query
+дек. 24, 2023 8:50:08 AM org.example.ClientManager findUser
+INFO: 222 data not find in DataBase
+дек. 24, 2023 8:50:09 AM org.example.DB create
+INFO: New User add to DataBase (org.example.ChatModels.User@15d3793b)
+дек. 24, 2023 8:50:09 AM org.example.ClientManager findUser
+INFO: Create new User. Username: 222
+дек. 24, 2023 8:50:09 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 8:50:09 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:50:09 AM org.example.DB getUserFromName
+WARNING: No entity found for query
+дек. 24, 2023 8:50:09 AM org.example.ClientManager findUser
+INFO: 333 data not find in DataBase
+дек. 24, 2023 8:50:09 AM org.example.DB create
+INFO: New User add to DataBase (org.example.ChatModels.User@2fe2965c)
+дек. 24, 2023 8:50:09 AM org.example.ClientManager findUser
+INFO: Create new User. Username: 333
+дек. 24, 2023 8:50:09 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 8:50:09 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:50:18 AM org.example.ClientManager removeClient
+INFO: 111 is disconnected
+дек. 24, 2023 8:50:18 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 8:50:18 AM org.example.ClientManager removeClient
+INFO: 222 is disconnected
+дек. 24, 2023 8:50:18 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 8:50:18 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 8:50:18 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 8:56:28 AM org.example.ClientManager findUser
+INFO: 111 data find in DataBase
+дек. 24, 2023 8:56:28 AM org.example.ClientManager <init>
+INFO: 111 is connected
+дек. 24, 2023 8:56:28 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:56:28 AM org.example.ClientManager findUser
+INFO: 222 data find in DataBase
+дек. 24, 2023 8:56:28 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 8:56:28 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:56:29 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 8:56:29 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 8:56:29 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:56:50 AM org.example.ClientManager removeClient
+INFO: 111 is disconnected
+дек. 24, 2023 8:56:50 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 8:56:50 AM org.example.ClientManager removeClient
+INFO: 222 is disconnected
+дек. 24, 2023 8:56:50 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 8:56:50 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 8:56:50 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 8:57:10 AM org.example.ClientManager findUser
+INFO: 111 data find in DataBase
+дек. 24, 2023 8:57:10 AM org.example.ClientManager <init>
+INFO: 111 is connected
+дек. 24, 2023 8:57:10 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:57:10 AM org.example.ClientManager findUser
+INFO: 222 data find in DataBase
+дек. 24, 2023 8:57:10 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 8:57:10 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:57:10 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 8:57:10 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 8:57:10 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:57:25 AM org.example.ClientManager newContact
+INFO: 222 data find in DataBase
+дек. 24, 2023 8:57:25 AM org.example.DB create
+INFO: New Contact add to DataBase (Contact{id=1, u1ID=2, u2ID=3, u1=org.example.ChatModels.User@773c2214, u2=org.example.ChatModels.User@2f678384})
+дек. 24, 2023 8:59:18 AM org.example.ClientManager removeClient
+INFO: 111 is disconnected
+дек. 24, 2023 8:59:18 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 8:59:18 AM org.example.ClientManager removeClient
+INFO: 222 is disconnected
+дек. 24, 2023 8:59:18 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 8:59:18 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 8:59:18 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 8:59:23 AM org.example.ClientManager findUser
+INFO: 111 data find in DataBase
+дек. 24, 2023 8:59:23 AM org.example.ClientManager <init>
+INFO: 111 is connected
+дек. 24, 2023 8:59:23 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:59:23 AM org.example.ClientManager findUser
+INFO: 222 data find in DataBase
+дек. 24, 2023 8:59:23 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 8:59:23 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:59:23 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 8:59:23 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 8:59:23 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 8:59:27 AM org.example.ClientManager removeClient
+INFO: 111 is disconnected
+дек. 24, 2023 8:59:27 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 8:59:27 AM org.example.ClientManager removeClient
+INFO: 222 is disconnected
+дек. 24, 2023 8:59:27 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 8:59:27 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 8:59:27 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:05:20 AM org.example.ClientManager findUser
+INFO: 111 data find in DataBase
+дек. 24, 2023 9:05:20 AM org.example.ClientManager <init>
+INFO: 111 is connected
+дек. 24, 2023 9:05:20 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:05:20 AM org.example.ClientManager findUser
+INFO: 222 data find in DataBase
+дек. 24, 2023 9:05:20 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 9:05:20 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:05:20 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 9:05:20 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 9:05:20 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:05:24 AM org.example.ClientManager removeClient
+INFO: 111 is disconnected
+дек. 24, 2023 9:05:24 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:05:24 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 9:05:24 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:05:24 AM org.example.ClientManager removeClient
+INFO: 222 is disconnected
+дек. 24, 2023 9:05:24 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:05:52 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 9:05:52 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 9:05:52 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:06:05 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 9:06:05 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:06:20 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 9:06:20 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 9:06:20 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:06:20 AM org.example.DB getUserFromName
+WARNING: No entity found for query
+дек. 24, 2023 9:06:20 AM org.example.ClientManager findUser
+INFO: qqq data not find in DataBase
+дек. 24, 2023 9:06:20 AM org.example.DB create
+INFO: New User add to DataBase (org.example.ChatModels.User@5fffb692)
+дек. 24, 2023 9:06:20 AM org.example.ClientManager findUser
+INFO: Create new User. Username: qqq
+дек. 24, 2023 9:06:20 AM org.example.ClientManager <init>
+INFO: qqq is connected
+дек. 24, 2023 9:06:20 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:06:38 AM org.example.ClientManager newContact
+INFO: 111 data find in DataBase
+дек. 24, 2023 9:06:38 AM org.example.DB create
+INFO: New Contact add to DataBase (Contact{id=2, u1ID=5, u2ID=2, u1=org.example.ChatModels.User@5fffb692, u2=org.example.ChatModels.User@74a58798})
+дек. 24, 2023 9:06:44 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 9:06:44 AM org.example.ClientManager removeClient
+INFO: qqq is disconnected
+дек. 24, 2023 9:06:44 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:06:44 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:09:19 AM org.example.ClientManager findUser
+INFO: qqq data find in DataBase
+дек. 24, 2023 9:09:19 AM org.example.ClientManager <init>
+INFO: qqq is connected
+дек. 24, 2023 9:09:19 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:09:19 AM org.example.ClientManager findUser
+INFO: qqq data find in DataBase
+дек. 24, 2023 9:09:19 AM org.example.ClientManager <init>
+INFO: qqq is connected
+дек. 24, 2023 9:09:19 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:09:28 AM org.example.ClientManager newContact
+INFO: 222 data find in DataBase
+дек. 24, 2023 9:09:28 AM org.example.DB create
+INFO: New Contact add to DataBase (Contact{id=3, u1ID=5, u2ID=3, u1=org.example.ChatModels.User@548e43b1, u2=org.example.ChatModels.User@618248c8})
+дек. 24, 2023 9:09:35 AM org.example.ClientManager removeClient
+INFO: qqq is disconnected
+дек. 24, 2023 9:09:35 AM org.example.ClientManager removeClient
+INFO: qqq is disconnected
+дек. 24, 2023 9:09:35 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:09:35 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:39:03 AM org.example.ClientManager findUser
+INFO: qqq data find in DataBase
+дек. 24, 2023 9:39:03 AM org.example.ClientManager <init>
+INFO: qqq is connected
+дек. 24, 2023 9:39:03 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:39:03 AM org.example.ClientManager findUser
+INFO: qqq data find in DataBase
+дек. 24, 2023 9:39:03 AM org.example.ClientManager <init>
+INFO: qqq is connected
+дек. 24, 2023 9:39:03 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:39:08 AM org.example.ClientManager removeClient
+INFO: qqq is disconnected
+дек. 24, 2023 9:39:08 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:39:08 AM org.example.ClientManager removeClient
+INFO: qqq is disconnected
+дек. 24, 2023 9:39:08 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:39:17 AM org.example.ClientManager findUser
+INFO: qqq data find in DataBase
+дек. 24, 2023 9:39:17 AM org.example.ClientManager <init>
+INFO: qqq is connected
+дек. 24, 2023 9:39:17 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:39:22 AM org.example.ClientManager removeClient
+INFO: qqq is disconnected
+дек. 24, 2023 9:39:22 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:39:49 AM org.example.ClientManager findUser
+INFO: 222 data find in DataBase
+дек. 24, 2023 9:39:49 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 9:39:49 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:39:49 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 9:39:49 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 9:39:49 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:39:55 AM org.example.ClientManager removeClient
+INFO: 222 is disconnected
+дек. 24, 2023 9:39:55 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 9:39:55 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:39:55 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:40:05 AM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 9:40:11 AM org.example.ClientManager findUser
+INFO: 222 data find in DataBase
+дек. 24, 2023 9:40:11 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 9:40:11 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:40:11 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 9:40:11 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 9:40:11 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:40:22 AM org.example.ClientManager newContact
+INFO: 333 data find in DataBase
+дек. 24, 2023 9:40:32 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 9:40:32 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:40:32 AM org.example.ClientManager removeClient
+INFO: 222 is disconnected
+дек. 24, 2023 9:40:32 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:41:09 AM org.example.ClientManager findUser
+INFO: 222 data find in DataBase
+дек. 24, 2023 9:41:09 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 9:41:09 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:41:09 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 9:41:09 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 9:41:09 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:41:16 AM org.example.ClientManager newContact
+INFO: 222 data find in DataBase
+дек. 24, 2023 9:41:20 AM org.example.ClientManager removeClient
+INFO: 222 is disconnected
+дек. 24, 2023 9:41:20 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:41:20 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 9:41:20 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:48:24 AM org.example.ClientManager findUser
+INFO: 222 data find in DataBase
+дек. 24, 2023 9:48:24 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 9:48:24 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:48:24 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 9:48:24 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 9:48:24 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:48:33 AM org.example.ClientManager newContact
+INFO: 333 data find in DataBase
+дек. 24, 2023 9:48:49 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 9:48:49 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 9:58:43 AM org.example.ClientManager findUser
+INFO: 222 data find in DataBase
+дек. 24, 2023 9:58:43 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 9:58:43 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:58:43 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 9:58:43 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 9:58:43 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 9:58:49 AM org.example.ClientManager newContact
+INFO: 333 data find in DataBase
+дек. 24, 2023 10:03:37 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 10:03:37 AM org.example.ClientManager run
+WARNING: Connection reset
+дек. 24, 2023 10:03:48 AM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 10:03:55 AM org.example.ClientManager findUser
+INFO: 222 data find in DataBase
+дек. 24, 2023 10:03:55 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 10:03:55 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 10:03:55 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 10:03:55 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 10:03:55 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 10:04:04 AM org.example.ClientManager newContact
+INFO: 333 data find in DataBase
+дек. 24, 2023 10:06:39 AM org.example.Server runServer
+INFO: Server started
+дек. 24, 2023 10:06:45 AM org.example.ClientManager findUser
+INFO: 222 data find in DataBase
+дек. 24, 2023 10:06:45 AM org.example.ClientManager <init>
+INFO: 222 is connected
+дек. 24, 2023 10:06:45 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 10:06:45 AM org.example.ClientManager findUser
+INFO: 333 data find in DataBase
+дек. 24, 2023 10:06:45 AM org.example.ClientManager <init>
+INFO: 333 is connected
+дек. 24, 2023 10:06:45 AM org.example.Server runServer
+INFO: New connection with IP: 127.0.0.1
+дек. 24, 2023 10:06:50 AM org.example.ClientManager newContact
+INFO: 222 data find in DataBase
+дек. 24, 2023 10:06:59 AM org.example.ClientManager removeClient
+INFO: 333 is disconnected
+дек. 24, 2023 10:06:59 AM org.example.ClientManager run
+WARNING: Connection reset

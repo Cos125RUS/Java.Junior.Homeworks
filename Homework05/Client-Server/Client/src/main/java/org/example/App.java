@@ -1,21 +1,24 @@
 package org.example;
 
 import org.example.ChatModels.Chat;
+import org.example.ChatModels.Contact;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.*;
 
 public class App {
     private final static String HOST = "localhost";
     private final static int PORT = 1400;
+    private static final String DELIMITER = "#%@!&=SEPORATION=!@%#";
     private final UI ui;
     private Client client;
     private Logger logger;
     private User user;
+    private HashMap<Long, Chat> chats;
 
     public App() {
         createLogger();
@@ -24,6 +27,13 @@ public class App {
             ui = new UI(this);
         else
             ui = new UI(this, user);
+    }
+
+    public App(String name) {
+        createLogger();
+        user = new User(name);
+        ui = new UI(this, user);
+        chats = new HashMap<>();
     }
 
     private void createLogger() {
@@ -80,16 +90,61 @@ public class App {
         }
     }
 
+    public void handling(String data) {
+        String[] params = data.split(DELIMITER);
+        String option = params[0];
+        long id = Long.parseLong(params[1]);
+        String payload = params[2];
+        switch (option) {
+            case "new_contact" -> createContact(id, payload);
+            case "send_message" -> printMessage(id, payload);
+        }
+    }
+
+    private void createContact(long id, String payload) {
+        if (id == 0){
+//            TODO контакт не найден
+        }
+        String[] userData = payload.split(":");
+        User chatMember = new User(Long.parseLong(userData[0]), userData[1]);
+        Contact contact = new Contact(id, chatMember);
+        chats.put(id, contact);
+        ui.createChatInChatList(contact);
+    }
+
     public void printMessage(String message) {
         ui.print(message);
     }
 
-    public void sendMessage(String message) {
-        client.sendMessage(message);
+    public void printMessage(long chatId, String message) {
+//        TODO отправка сообщений в фоновый чат
+        ui.print(message);
+    }
+
+    public void sendMessage(long chatId, String message) {
+        String data = "text" + DELIMITER + chatId + DELIMITER + message;
+        client.sendMessage(data);
     }
 
     public List<Chat> getChats() {
         return client.getChats();
     }
 
+    public void newContact(String name) {
+        String message = "find" + DELIMITER + "0" + DELIMITER + name;
+        client.sendMessage(message);
+    }
+
+    public void newGroup(String name, List<String> members) {
+        StringBuilder message = new StringBuilder("create" + DELIMITER + "0" + DELIMITER + name + "@@");
+        for (int i = 0; i < members.size() - 1; i++) {
+            message.append(members.get(i)).append("%");
+        }
+        message.append(members.get(members.size() - 1)).append("%");
+        client.sendMessage(message.toString());
+    }
+
+    public User getUser() {
+        return user;
+    }
 }

@@ -82,7 +82,8 @@ public class ClientManager implements Runnable {
         long chatId = Long.parseLong(options[1]);
         String payloadData = options[2];
         switch (contentType) {
-            case "text" -> sendMessage(chatId, payloadData);
+            case "text" -> sendMessage(Contact.class, chatId, payloadData);
+            case "group" -> sendMessage(Group.class, chatId, payloadData);
             case "find" -> newContact(payloadData);
             case "create" -> newGroup(payloadData);
             case "media" -> {
@@ -93,8 +94,9 @@ public class ClientManager implements Runnable {
         }
     }
 
-    private void sendMessage(long chatId, String message) {
-        Chat chat = db.select(Chat.class, (int) chatId);
+    private void sendMessage(Class<? extends Chat> clazz, long chatId, String message) {
+        int id = (int) chatId;
+        Chat chat = db.select(clazz, id);
         UsersList users = chat.getUsers();
         String data = "send_message" + DELIMITER + chatId + DELIMITER + message;
         groupMessage(users, data);
@@ -106,24 +108,30 @@ public class ClientManager implements Runnable {
         if (findUser != null) {
             logger.log(Level.INFO, userName + " data find in DataBase");
             Contact contact = new Contact(user, findUser);
-            db.create(contact);
-            data += "1" + DELIMITER + contact.getId() + "%{" + findUser.getId() +
-                    ":" + findUser.getName() + "}";
+            data += contact.getId() + DELIMITER;
+//            db.create(contact); //TODO Добавить загрузку контакта из БД
+            String dataUser1 = data + findUser.getId() + ":" + findUser.getName();
+            send(this, dataUser1);
+            String dataUser2 = data + user.getId() + ":" + user.getName();
+            send(activeUsers.get(findUser.getId()), dataUser2);
         } else {
             logger.log(Level.INFO, userName + " data not find in DataBase");
             data += "0" + DELIMITER + "-";
+            send(this, data);
         }
-        send(this, data);
     }
 
     private void newGroup(String usersList) {
         StringBuilder data = new StringBuilder("new_group" + DELIMITER);
-        UsersList users = (UsersList) Arrays.stream(usersList.split("%"))
+        String[] options = usersList.split("@@");
+        String groupName = options[0];
+        UsersList users = (UsersList) Arrays.stream(options[1].split("%"))
                 .map(db::getUserFromName)
                 .toList();
         if (!users.isEmpty()) {
-            Group group = new Group();
-            data.append("1" + DELIMITER).append(group.getId()).append("{");
+            Group group = new Group(groupName, users);
+            db.create(group);
+            data.append(group.getId()).append(DELIMITER).append(group.getName()).append("{");
             for (int i = 0; i < users.size() - 1; i++) {
                 data.append(users.get(i).getId()).append(":").append(users.get(i).getName()).append(",");
             }
