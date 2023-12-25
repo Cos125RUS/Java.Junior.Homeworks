@@ -1,6 +1,8 @@
 package org.example;
 
+import java.io.Serializable;
+
 public interface Packable {
-    <T extends Transportable> void pack(T obj);
-    <T extends Transportable> T unpack() throws ClassNotFoundException;
+    <T extends Serializable> void pack(T obj);
+    <T extends Serializable> T unpack() throws ClassNotFoundException;
 }

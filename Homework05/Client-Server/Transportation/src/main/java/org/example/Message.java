@@ -1,4 +1,6 @@
 package org.example;
 
-public class Message implements Transportable{
+import java.io.Serializable;
+
+public class Message implements Serializable {
 }
