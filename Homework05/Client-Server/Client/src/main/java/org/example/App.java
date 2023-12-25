@@ -65,10 +65,11 @@ public class App {
         try {
             Socket socket = new Socket(HOST, PORT);
             client = new Client(this, socket, login, logger);
-            InetAddress inetAddress = socket.getInetAddress();
+            InetAddress inetAddress = socket.getLocalAddress();
             String remoteIp = inetAddress.getHostAddress();
-            logger.log(Level.INFO, "Connection\nInetAddress: " + inetAddress +
-                    "\nRemote IP: " + remoteIp + "\nLocalPort:" + socket.getLocalPort());
+            logger.log(Level.INFO, "Connection with " + user.getName() +
+                    "\nRemote IP: " + remoteIp +
+                    "\nLocalPort:" + socket.getLocalPort());
             client.listenForMessage();
             client.sendLogin();
 //          TODO добавить аутентификацию

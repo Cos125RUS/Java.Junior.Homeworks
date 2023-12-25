@@ -45,7 +45,6 @@ public class Client {
                 try {
                     message = bufferedReader.readLine();
                     app.handling(message);
-//                    app.printMessage(message);
                 } catch (IOException e) {
                     logger.log(Level.WARNING, e.getMessage());
                     closeEverything(socket, bufferedReader, bufferedWriter);
