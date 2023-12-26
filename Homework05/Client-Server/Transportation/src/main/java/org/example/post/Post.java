@@ -23,9 +23,7 @@ public class Post extends Thread implements Sender, Stored {
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
     private Queue<Transportable> awaitingQueue;
-    private Addressed addressed;
-    private HashMap<Integer, Addressed> addressedMap;
-    private ArrayList<PostBox> postBoxes;
+    private HashMap<Integer, PostBox> postBoxes;
     private ArrayList<Postman> postmenList;
     private boolean working;
     private boolean anonymity;
@@ -35,7 +33,8 @@ public class Post extends Thread implements Sender, Stored {
     //    region constructions
     public Post(InputStream inputStream) throws IOException {
         awaitingQueue = new ArrayDeque<>();
-        addressedMap = new HashMap<>();
+        postBoxes = new HashMap<>();
+        postmenList = new ArrayList<>();
         try {
             objectInputStream = new ObjectInputStream(inputStream);
         } catch (IOException e) {
@@ -45,7 +44,8 @@ public class Post extends Thread implements Sender, Stored {
     }
 
     public Post(OutputStream outputStream) throws IOException {
-        addressedMap = new HashMap<>();
+        postBoxes = new HashMap<>();
+        postmenList = new ArrayList<>();
         try {
             objectOutputStream = new ObjectOutputStream(outputStream);
         } catch (IOException e) {
@@ -56,7 +56,8 @@ public class Post extends Thread implements Sender, Stored {
 
     public Post(InputStream inputStream, OutputStream outputStream) throws IOException {
         awaitingQueue = new ArrayDeque<>();
-        addressedMap = new HashMap<>();
+        postBoxes = new HashMap<>();
+        postmenList = new ArrayList<>();
         try {
             objectInputStream = new ObjectInputStream(inputStream);
             objectOutputStream = new ObjectOutputStream(outputStream);
@@ -69,7 +70,8 @@ public class Post extends Thread implements Sender, Stored {
     public Post(Socket socket) throws IOException {
         this.socket = socket;
         awaitingQueue = new ArrayDeque<>();
-        addressedMap = new HashMap<>();
+        postBoxes = new HashMap<>();
+        postmenList = new ArrayList<>();
         try {
             System.out.println(socket.isConnected());
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -84,7 +86,8 @@ public class Post extends Thread implements Sender, Stored {
         this.socket = socket;
         this.anonymity = true;
         awaitingQueue = new ArrayDeque<>();
-        addressedMap = new HashMap<>();
+        postBoxes = new HashMap<>();
+        postmenList = new ArrayList<>();
         try {
             objectInputStream = new ObjectInputStream(socket.getInputStream());
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
@@ -135,9 +138,9 @@ public class Post extends Thread implements Sender, Stored {
         return (T[]) awaitingQueue.toArray();
     }
 
-    public PostBox getPostBox() {
-        PostBox postBox = new PostBox();
-        postBoxes.add(postBox);
+    public PostBox getPostBox(int postCode) {
+        PostBox postBox = new PostBox(postCode);
+        postBoxes.put(postCode, postBox);
         redirected = true;
         return postBox;
     }
@@ -148,87 +151,46 @@ public class Post extends Thread implements Sender, Stored {
         return postman;
     }
 
-//    region postman
-    public void setAddressee(Object object, Method method) {
-        addressed = new Addressee(object, object.getClass(), method);
-    }
-
-    public void setAddressee(Object object, String method) throws NoSuchMethodException {
-        addressed = new Addressee(object, object.getClass(),
-                object.getClass().getMethod(method));
-    }
-
-    public void setAddressee(Object object, Method method, boolean unpacking) {
-        if (unpacking)
-            addressed = new PrivilegedAddressee(object, object.getClass(), method);
-        else
-            addressed = new Addressee(object, object.getClass(), method);
-    }
-
-    public void setAddressee(Object object, String method, boolean unpacking) throws NoSuchMethodException {
-        if (unpacking)
-            addressed = new PrivilegedAddressee(object, object.getClass(),
-                    object.getClass().getMethod(method));
-        else
-            addressed = new Addressee(object, object.getClass(),
-                    object.getClass().getMethod(method));
-    }
-
-    public void addAddressee(Object object, Method method, int postCode) {
-        Addressed addressed = new PrivilegedAddressee(object, object.getClass(), method);
-        addressedMap.put(postCode, addressed);
-    }
-
-    public void addAddressee(Object object, String method, int postCode) throws NoSuchMethodException {
-        Addressed addressed = new PrivilegedAddressee(object, object.getClass(),
-                object.getClass().getMethod(method));
-        addressedMap.put(postCode, addressed);
-    }
-
-    public void addAddressee(HashMap<Integer, Addressed> addressedMap) throws NoSuchMethodException {
-        this.addressedMap.putAll(addressedMap);
-    }
-
-    public void addAddressee(Object object) {
-        Method[] methods = object.getClass().getDeclaredMethods();
-        List<Method> list = Arrays.stream(methods).filter(it ->
-                it.isAnnotationPresent(Addressing.class)).toList();
-        for (Method method : list) {
-            Addressing annotation = method.getAnnotation(Addressing.class);
-            int postCode = annotation.postCode();
-            addressedMap.put(postCode, new PrivilegedAddressee(object, object.getClass(), method));
-        }
-    }
-//endregion
-
     private void redirection(Transportable transportable) throws InvocationTargetException, IllegalAccessException {
-        if (addressed != null)
-            addressed.take(transportable);
-        if (!addressedMap.isEmpty())
-            redirectionToAll(transportable);
-    }
-
-    private void redirectionToAll(Transportable transportable) throws InvocationTargetException, IllegalAccessException {
-        Field[] declaredFields = transportable.getClass().getDeclaredFields();
-        List<Field> list = Arrays.stream(declaredFields).filter(it ->
-                it.isAnnotationPresent(PostCode.class)).toList();
-        if (list.isEmpty())
-            throw new RuntimeException("PostCode annotation not found");
-        int id = list.get(0).getInt(transportable);
-        addressedMap.get(id).take(transportable);
+        boolean destinationFound = false;
+        for (Postman postman : postmenList) {
+            if (postman.newCorespondent(transportable))
+                destinationFound = true;
+        }
+        if (!destinationFound) {
+            Integer postCode;
+            if ((postCode = Postman.getPostCode(transportable)) != null) {
+                postBoxes.get(postCode).add(transportable);
+            }
+        } else awaitingQueue.add(transportable);
     }
 
     public void stopRedirection() {
         redirected = false;
     }
 
-    public void startRedirection() {
-//        redirected = true;
+    public boolean startRedirection() {
+        if (!postBoxes.isEmpty() || !postmenList.isEmpty()) {
+            return (redirected = true);
+        } else return false;
     }
 
     public void clearRedirections() {
-        addressed = null;
-        addressedMap = null;
+        postBoxes = new HashMap<>();
+        postmenList = new ArrayList<>();
+        redirected = false;
+    }
+
+    public void deleteRedirect(PostBox postBox) {
+        postBoxes.remove(postBox.getPostCode());
+        if (postBoxes.isEmpty() && postmenList.isEmpty())
+            redirected = false;
+    }
+
+    public void deleteRedirect(Postman postman) {
+        postmenList.remove(postman);
+        if (postBoxes.isEmpty() && postmenList.isEmpty())
+            redirected = false;
     }
 
     @Override
@@ -237,7 +199,7 @@ public class Post extends Thread implements Sender, Stored {
         while (working) {
             try {
                 Transportable transportable = (Transportable) objectInputStream.readObject();
-                if (addressed == null && addressedMap.isEmpty())
+                if (!redirected)
                     awaitingQueue.add(transportable);
                 else
                     redirection(transportable);
@@ -250,21 +212,6 @@ public class Post extends Thread implements Sender, Stored {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public Addressed getAddressed() {
-        return addressed;
-    }
-
-    public HashMap<Integer, Addressed> getAddressedMap() {
-        return addressedMap;
-    }
-
-    public List<Addressed> getAddressedList() {
-        if (!addressedMap.isEmpty())
-            return (ArrayList<Addressed>) addressedMap.values();
-        else
-            return null;
     }
 
     public boolean isRedirected() {

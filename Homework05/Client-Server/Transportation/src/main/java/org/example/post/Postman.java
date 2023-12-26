@@ -10,12 +10,9 @@ import org.example.packs.annotations.PostCode;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
-public class Postman implements Delivering{
+public class Postman implements Delivering {
     private UUID uuid;
     private Addressed defaultAddressed;
     private final HashMap<Integer, Addressed> addressedMap;
@@ -121,19 +118,49 @@ public class Postman implements Delivering{
         } else addAddressee(object);
     }
 
+
+    public Addressed getAddressed() {
+        return defaultAddressed;
+    }
+
+    public HashMap<Integer, Addressed> getAddressedMap() {
+        return addressedMap;
+    }
+
+    public List<Addressed> getAddressedList() {
+        if (!addressedMap.isEmpty())
+            return (ArrayList<Addressed>) addressedMap.values();
+        else
+            return null;
+    }
+
+    public List<Integer> getServicedPostsCode() {
+        if (!addressedMap.isEmpty())
+            return addressedMap.keySet().stream().toList();
+        else
+            return null;
+    }
+
     @Override
-    public void newCorespondent(Transportable transportable) throws IllegalAccessException, InvocationTargetException {
+    public boolean newCorespondent(Transportable transportable) throws IllegalAccessException, InvocationTargetException {
+        Integer postCode;
+        if ((postCode = getPostCode(transportable)) != null) {
+            addressedMap.get(postCode).take(transportable);
+            return true;
+        } else if (defaultAddressed != null) {
+            defaultAddressed.take(transportable);
+            return true;
+        } else return false;
+    }
+
+    public static Integer getPostCode(Transportable transportable) throws IllegalAccessException {
         Field[] declaredFields = transportable.getClass().getDeclaredFields();
         List<Field> list = Arrays.stream(declaredFields).filter(it ->
                 it.isAnnotationPresent(PostCode.class)).toList();
         if (list.isEmpty()) {
-            if (defaultAddressed == null)
-                throw new RuntimeException(
-                        "PostCode annotation not found and defaultAddressed is null");
-            else defaultAddressed.take(transportable);
+            return null;
         } else {
-            int id = list.get(0).getInt(transportable);
-            addressedMap.get(id).take(transportable);
+            return list.get(0).getInt(transportable);
         }
     }
 }

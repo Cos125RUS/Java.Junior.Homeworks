@@ -5,5 +5,5 @@ import org.example.packs.Transportable;
 import java.lang.reflect.InvocationTargetException;
 
 public interface Delivering {
-    void newCorespondent(Transportable transportable) throws IllegalAccessException, InvocationTargetException;
+    boolean newCorespondent(Transportable transportable) throws IllegalAccessException, InvocationTargetException;
 }

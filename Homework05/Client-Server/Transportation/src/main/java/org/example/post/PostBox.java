@@ -14,17 +14,11 @@ public class PostBox {
     private int postCode;
     private final Deque<Transportable> mails;
 
-    public PostBox() {
-        uuid = UUID.randomUUID();
-        mails = new LinkedList<>();
-    }
-
     public PostBox(int postCode) {
         this.postCode = postCode;
         uuid = UUID.randomUUID();
         mails = new LinkedList<>();
     }
-
 
     public void add (Transportable transportable) {
         mails.add(transportable);
@@ -46,5 +40,9 @@ public class PostBox {
 
     public List<Transportable> toList() {
         return mails.stream().toList();
+    }
+
+    public int getPostCode() {
+        return postCode;
     }
 }
