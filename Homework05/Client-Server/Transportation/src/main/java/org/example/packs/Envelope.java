@@ -11,8 +11,10 @@ public class Envelope implements Packable, Serializable, Transportable {
 //    region fields
     @Serial
     private static final long serialVersionUID = 1L;
-    @Address
-    private InetAddress inetAddress;
+    @LocalAddress
+    private InetAddress localAddress;
+    @DestinationAddress
+    private InetAddress destinationAddress;
     @PostType
     private String methodType;
     @Availability
@@ -20,7 +22,7 @@ public class Envelope implements Packable, Serializable, Transportable {
     @PostObjectType
     private String dataType;
     @PostObject
-    private Object object;
+    private Serializable object;
 // endregion
 
 //    region constructors
@@ -37,9 +39,35 @@ public class Envelope implements Packable, Serializable, Transportable {
         notNull = true;
     }
 
-    public <T extends Serializable> Envelope(InetAddress inetAddress, String methodType, T object) {
-        this.inetAddress = inetAddress;
+    public <T extends Serializable> Envelope(T object) {
+        pack(object);
+        notNull = true;
+    }
+
+    public <T extends Serializable> Envelope(InetAddress destinationAddress, String methodType, T object) {
+        this.destinationAddress = destinationAddress;
         this.methodType = methodType;
+        pack(object);
+        notNull = true;
+    }
+
+    public <T extends Serializable> Envelope(InetAddress destinationAddress, T object) {
+        this.destinationAddress = destinationAddress;
+        pack(object);
+        notNull = true;
+    }
+
+    public <T extends Serializable> Envelope(InetAddress localAddress, InetAddress destinationAddress, String methodType, T object) {
+        this.destinationAddress = destinationAddress;
+        this.localAddress = localAddress;
+        this.methodType = methodType;
+        pack(object);
+        notNull = true;
+    }
+
+    public <T extends Serializable> Envelope(InetAddress localAddress, InetAddress destinationAddress, T object) {
+        this.destinationAddress = destinationAddress;
+        this.localAddress = localAddress;
         pack(object);
         notNull = true;
     }
@@ -52,6 +80,7 @@ public class Envelope implements Packable, Serializable, Transportable {
     public <T extends Serializable> void pack(T obj) {
         dataType = obj.getClass().getCanonicalName();
         object = obj;
+        notNull = true;
     }
 
     @Override
@@ -89,23 +118,25 @@ public class Envelope implements Packable, Serializable, Transportable {
     @Override
     public String toString() {
         return "Envelope{" +
-                "inetAddress=" + inetAddress +
+                "localAddress=" + localAddress +
+                ", destinationAddress=" + destinationAddress +
                 ", methodType='" + methodType + '\'' +
                 ", notNull=" + notNull +
                 ", dataType='" + dataType + '\'' +
                 ", object=" + object +
                 '}';
     }
-//    endregion
+
+    //    endregion
 
 //    region gettersAndSetters
 
-    public InetAddress getInetAddress() {
-        return inetAddress;
+    public InetAddress getLocalAddress() {
+        return localAddress;
     }
 
-    public void setInetAddress(InetAddress inetAddress) {
-        this.inetAddress = inetAddress;
+    public void setLocalAddress(InetAddress localAddress) {
+        this.localAddress = localAddress;
     }
 
     public String getMethodType() {
@@ -120,19 +151,35 @@ public class Envelope implements Packable, Serializable, Transportable {
         return dataType;
     }
 
-    public void setDataType(String dataType) {
+    private void setDataType(String dataType) {
         this.dataType = dataType;
     }
 
-    public Object getObject() {
+    public Serializable getObject() {
         return object;
     }
 
-    public <T extends Serializable> void setObject(T object) {
+    private void setObject(Serializable object) {
         this.object = object;
         notNull = true;
     }
 
-//    endregion
+    public InetAddress getDestinationAddress() {
+        return destinationAddress;
+    }
+
+    public void setDestinationAddress(InetAddress destinationAddress) {
+        this.destinationAddress = destinationAddress;
+    }
+
+    public boolean isNotNull() {
+        return notNull;
+    }
+
+    private void setNotNull(boolean notNull) {
+        this.notNull = notNull;
+    }
+
+    //    endregion
 
 }

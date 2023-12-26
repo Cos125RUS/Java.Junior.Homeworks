@@ -4,7 +4,9 @@ import org.example.packs.Transportable;
 import org.example.packs.annotations.*;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.*;
 
 public class Post extends Thread implements Sender, Stored {
@@ -92,13 +94,13 @@ public class Post extends Thread implements Sender, Stored {
         }
     }
 
-    private void stamp(Transportable transportable) throws IllegalAccessException {
+    private void stamp(Transportable transportable) throws IllegalAccessException, UnknownHostException {
         Arrays.stream(transportable.getClass().getDeclaredFields()).filter(field -> {
             field.setAccessible(true);
             return !Arrays.stream(field.getAnnotations()).filter(
-                            annotation -> annotation.annotationType().equals(Address.class))
+                            annotation -> annotation.annotationType().equals(LocalAddress.class))
                     .toList().isEmpty();
-        }).toList().get(0).set(transportable, socket.getInetAddress());
+        }).toList().get(0).set(transportable, InetAddress.getLocalHost());
     }
 
     @Override
