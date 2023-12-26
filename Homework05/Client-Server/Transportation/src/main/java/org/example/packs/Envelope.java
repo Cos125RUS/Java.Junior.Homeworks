@@ -5,18 +5,23 @@ import org.example.packs.annotations.*;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.net.InetAddress;
+import java.util.UUID;
 
 public class Envelope implements Packable, Serializable, Transportable {
 
 //    region fields
     @Serial
     private static final long serialVersionUID = 1L;
+    @PackId
+    private UUID uuid;
     @LocalAddress
     private InetAddress localAddress;
     @DestinationAddress
     private InetAddress destinationAddress;
     @PostType
-    private String methodType;
+    private String postType;
+    @PostCode
+    private int postCode;
     @Availability
     private boolean notNull;
     @PostObjectType
@@ -27,40 +32,80 @@ public class Envelope implements Packable, Serializable, Transportable {
 
 //    region constructors
     public Envelope() {
+        uuid = UUID.randomUUID();
     }
 
-    public Envelope(String methodType) {
-        this.methodType = methodType;
+    public Envelope(String postType) {
+        this.postType = postType;
+        uuid = UUID.randomUUID();
     }
 
-    public <T extends Serializable> Envelope(String methodType, T object) {
-        this.methodType = methodType;
+
+    public Envelope(int postCode) {
+        this.postCode = postCode;
+        uuid = UUID.randomUUID();
+    }
+
+    public <T extends Serializable> Envelope(String postType, T object) {
+        this.postType = postType;
+        uuid = UUID.randomUUID();
+        pack(object);
+        notNull = true;
+    }
+
+
+    public <T extends Serializable> Envelope(int postCode, T object) {
+        this.postCode = postCode;
+        uuid = UUID.randomUUID();
         pack(object);
         notNull = true;
     }
 
     public <T extends Serializable> Envelope(T object) {
+        uuid = UUID.randomUUID();
         pack(object);
         notNull = true;
     }
 
-    public <T extends Serializable> Envelope(InetAddress destinationAddress, String methodType, T object) {
+    public <T extends Serializable> Envelope(InetAddress destinationAddress, String postType, T object) {
         this.destinationAddress = destinationAddress;
-        this.methodType = methodType;
+        this.postType = postType;
+        uuid = UUID.randomUUID();
+        pack(object);
+        notNull = true;
+    }
+
+
+    public <T extends Serializable> Envelope(InetAddress destinationAddress, int postCode, T object) {
+        this.destinationAddress = destinationAddress;
+        this.postCode = postCode;
+        uuid = UUID.randomUUID();
         pack(object);
         notNull = true;
     }
 
     public <T extends Serializable> Envelope(InetAddress destinationAddress, T object) {
         this.destinationAddress = destinationAddress;
+        uuid = UUID.randomUUID();
         pack(object);
         notNull = true;
     }
 
-    public <T extends Serializable> Envelope(InetAddress localAddress, InetAddress destinationAddress, String methodType, T object) {
+    public <T extends Serializable> Envelope(InetAddress localAddress, InetAddress destinationAddress, String postType, T object) {
         this.destinationAddress = destinationAddress;
         this.localAddress = localAddress;
-        this.methodType = methodType;
+        this.postType = postType;
+        uuid = UUID.randomUUID();
+        pack(object);
+        notNull = true;
+    }
+
+
+    public <T extends Serializable> Envelope(InetAddress localAddress, InetAddress destinationAddress, int postCode, T object) {
+        this.destinationAddress = destinationAddress;
+        this.localAddress = localAddress;
+        this.postCode = postCode;
+        uuid = UUID.randomUUID();
         pack(object);
         notNull = true;
     }
@@ -68,6 +113,7 @@ public class Envelope implements Packable, Serializable, Transportable {
     public <T extends Serializable> Envelope(InetAddress localAddress, InetAddress destinationAddress, T object) {
         this.destinationAddress = destinationAddress;
         this.localAddress = localAddress;
+        uuid = UUID.randomUUID();
         pack(object);
         notNull = true;
     }
@@ -120,7 +166,7 @@ public class Envelope implements Packable, Serializable, Transportable {
         return "Envelope{" +
                 "localAddress=" + localAddress +
                 ", destinationAddress=" + destinationAddress +
-                ", methodType='" + methodType + '\'' +
+                ", methodType='" + postType + '\'' +
                 ", notNull=" + notNull +
                 ", dataType='" + dataType + '\'' +
                 ", object=" + object +
@@ -139,12 +185,12 @@ public class Envelope implements Packable, Serializable, Transportable {
         this.localAddress = localAddress;
     }
 
-    public String getMethodType() {
-        return methodType;
+    public String getPostType() {
+        return postType;
     }
 
-    public void setMethodType(String methodType) {
-        this.methodType = methodType;
+    public void setPostType(String postType) {
+        this.postType = postType;
     }
 
     public String getDataType() {
@@ -178,6 +224,14 @@ public class Envelope implements Packable, Serializable, Transportable {
 
     private void setNotNull(boolean notNull) {
         this.notNull = notNull;
+    }
+
+    public int getPostCode() {
+        return postCode;
+    }
+
+    public void setPostCode(int postCode) {
+        this.postCode = postCode;
     }
 
     //    endregion
