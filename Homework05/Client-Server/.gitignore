@@ -44,4 +44,7 @@ build/
 /log.txt.2
 /ServerLog.txt
 /user.bin
-/Transportation/src/main/java/org/example/Main.java
+
+/Transportation/src/main/java/org/example/TestPost.java
+/Transportation/src/main/java/org/example/TestServer2.java
+/Transportation/src/main/java/org/example/TestServer.java

@@ -1,7 +1,7 @@
-package org.example;
+package org.example.packs;
 
 import java.io.IOException;
 
 public interface Transportable {
-    void send() throws IOException;
+
 }
