@@ -3,6 +3,7 @@ package org.example;
 import com.fasterxml.jackson.databind.introspect.Annotated;
 import org.example.adresses.Addressed;
 import org.example.adresses.Addressee;
+import org.example.adresses.Addressing;
 import org.example.adresses.PrivilegedAddressee;
 import org.example.packs.Packable;
 import org.example.packs.Transportable;
@@ -95,6 +96,7 @@ public class Post extends Thread implements Sender, Stored {
     }
 //    endregion
 
+    //    region methods
     public void close() throws IOException {
         working = false;
         if (objectOutputStream != null) objectOutputStream.close();
@@ -154,18 +156,29 @@ public class Post extends Thread implements Sender, Stored {
 
 
     public void addAddressee(Object object, Method method, int postCode) {
-        addressed = new PrivilegedAddressee(object, object.getClass(), method);
+        Addressed addressed = new PrivilegedAddressee(object, object.getClass(), method);
         addressedMap.put(postCode, addressed);
     }
 
     public void addAddressee(Object object, String method, int postCode) throws NoSuchMethodException {
-        addressed = new PrivilegedAddressee(object, object.getClass(),
+        Addressed addressed = new PrivilegedAddressee(object, object.getClass(),
                 object.getClass().getMethod(method));
         addressedMap.put(postCode, addressed);
     }
 
-    public void addAddressee(HashMap<Integer, Addressed> addressedMap, int postCode) throws NoSuchMethodException {
+    public void addAddressee(HashMap<Integer, Addressed> addressedMap) throws NoSuchMethodException {
         this.addressedMap.putAll(addressedMap);
+    }
+
+    public void addAddressee(Object object) {
+        Method[] methods = object.getClass().getDeclaredMethods();
+        List<Method> list = Arrays.stream(methods).filter(it ->
+                it.isAnnotationPresent(Addressing.class)).toList();
+        for (Method method : list) {
+            Addressing annotation = method.getAnnotation(Addressing.class);
+            int postCode = annotation.postCode();
+            addressedMap.put(postCode, new PrivilegedAddressee(object, object.getClass(), method));
+        }
     }
 
     private void redirection(Transportable transportable) throws InvocationTargetException, IllegalAccessException {
@@ -177,10 +190,11 @@ public class Post extends Thread implements Sender, Stored {
 
     private void redirectionToAll(Transportable transportable) throws InvocationTargetException, IllegalAccessException {
         Field[] declaredFields = transportable.getClass().getDeclaredFields();
-        int id = Arrays.stream(declaredFields).filter(
-                it -> !Arrays.stream(it.getAnnotations())
-                        .filter(PostCode.class::equals).toList().isEmpty())
-                .toList().get(0).getInt(transportable);
+        List<Field> list = Arrays.stream(declaredFields).filter(it ->
+                it.isAnnotationPresent(PostCode.class)).toList();
+        if (list.isEmpty())
+            throw new RuntimeException("PostCode annotation not found");
+        int id = list.get(0).getInt(transportable);
         addressedMap.get(id).take(transportable);
     }
 
@@ -228,4 +242,6 @@ public class Post extends Thread implements Sender, Stored {
         else
             return null;
     }
+
+//    endregion
 }
