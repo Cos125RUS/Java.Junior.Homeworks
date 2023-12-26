@@ -8,6 +8,7 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.UUID;
 
+@Deprecated
 public class Box implements Packable, Serializable, Transportable {
 
     //    region fields
@@ -45,5 +46,10 @@ public class Box implements Packable, Serializable, Transportable {
 
     public int size() {
         return objects.size();
+    }
+
+    @Override
+    public Serializable getObject() {
+        return null;
     }
 }
