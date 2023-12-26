@@ -41,6 +41,7 @@ public class Post extends Thread implements Sender, Stored {
             close();
             throw new IOException(e);
         }
+        this.start();
     }
 
     public Post(OutputStream outputStream) throws IOException {
@@ -52,6 +53,7 @@ public class Post extends Thread implements Sender, Stored {
             close();
             throw new IOException(e);
         }
+        this.start();
     }
 
     public Post(InputStream inputStream, OutputStream outputStream) throws IOException {
@@ -65,6 +67,7 @@ public class Post extends Thread implements Sender, Stored {
             close();
             throw new IOException(e);
         }
+        this.start();
     }
 
     public Post(Socket socket) throws IOException {
@@ -73,13 +76,13 @@ public class Post extends Thread implements Sender, Stored {
         postBoxes = new HashMap<>();
         postmenList = new ArrayList<>();
         try {
-            System.out.println(socket.isConnected());
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             objectInputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             close();
             throw new IOException(e);
         }
+        this.start();
     }
 
     public Post(Socket socket, boolean anonymity) throws IOException {
@@ -95,6 +98,7 @@ public class Post extends Thread implements Sender, Stored {
             close();
             throw new IOException(e);
         }
+        this.start();
     }
 //    endregion
 
@@ -120,6 +124,11 @@ public class Post extends Thread implements Sender, Stored {
         }
     }
 
+    public void send(Object object) throws IOException {
+        Transportable transportable = () -> (Serializable) object;
+        send(transportable);
+    }
+
     private void stamp(Transportable transportable) throws IllegalAccessException, UnknownHostException {
         Arrays.stream(transportable.getClass().getDeclaredFields()).filter(field -> {
             field.setAccessible(true);
@@ -136,6 +145,10 @@ public class Post extends Thread implements Sender, Stored {
 
     public <T extends Transportable> T[] getAll() {
         return (T[]) awaitingQueue.toArray();
+    }
+
+    public boolean isAwaiting(){
+        return !awaitingQueue.isEmpty();
     }
 
     public PostBox getPostBox(int postCode) {
@@ -193,6 +206,10 @@ public class Post extends Thread implements Sender, Stored {
             redirected = false;
     }
 
+    public boolean isRedirected() {
+        return redirected;
+    }
+
     @Override
     public void run() {
         working = true;
@@ -212,10 +229,6 @@ public class Post extends Thread implements Sender, Stored {
                 throw new RuntimeException(e);
             }
         }
-    }
-
-    public boolean isRedirected() {
-        return redirected;
     }
 
     //    endregion

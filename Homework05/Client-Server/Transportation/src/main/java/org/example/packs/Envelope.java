@@ -201,6 +201,7 @@ public class Envelope implements Packable, Serializable, Transportable {
         this.dataType = dataType;
     }
 
+    @Override
     public Serializable getObject() {
         return object;
     }

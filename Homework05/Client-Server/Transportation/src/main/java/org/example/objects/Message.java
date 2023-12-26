@@ -21,6 +21,10 @@ public class Message implements Serializable {
     public Message() {
     }
 
+    public Message(String text){
+        this.text = text;
+    }
+
     public Message(long id, long chatId, long userId, String text) {
         this.id = id;
         this.chatId = chatId;
