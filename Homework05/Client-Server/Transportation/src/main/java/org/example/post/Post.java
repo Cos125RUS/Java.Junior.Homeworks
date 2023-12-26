@@ -1,17 +1,14 @@
-package org.example;
+package org.example.post;
 
-import com.fasterxml.jackson.databind.introspect.Annotated;
 import org.example.adresses.Addressed;
 import org.example.adresses.Addressee;
 import org.example.adresses.Addressing;
 import org.example.adresses.PrivilegedAddressee;
-import org.example.packs.Packable;
 import org.example.packs.Transportable;
 import org.example.packs.annotations.*;
 import org.example.packs.annotations.PostCode;
 
 import java.io.*;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,7 +16,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Post extends Thread implements Sender, Stored {
     //    region fields
@@ -29,8 +25,11 @@ public class Post extends Thread implements Sender, Stored {
     private Queue<Transportable> awaitingQueue;
     private Addressed addressed;
     private HashMap<Integer, Addressed> addressedMap;
+    private ArrayList<PostBox> postBoxes;
+    private ArrayList<Postman> postmenList;
     private boolean working;
     private boolean anonymity;
+    private boolean redirected;
 //    endregion
 
     //    region constructions
@@ -136,6 +135,20 @@ public class Post extends Thread implements Sender, Stored {
         return (T[]) awaitingQueue.toArray();
     }
 
+    public PostBox getPostBox() {
+        PostBox postBox = new PostBox();
+        postBoxes.add(postBox);
+        redirected = true;
+        return postBox;
+    }
+
+    public Postman getPostman() {
+        Postman postman = new Postman();
+        redirected = true;
+        return postman;
+    }
+
+//    region postman
     public void setAddressee(Object object, Method method) {
         addressed = new Addressee(object, object.getClass(), method);
     }
@@ -146,14 +159,20 @@ public class Post extends Thread implements Sender, Stored {
     }
 
     public void setAddressee(Object object, Method method, boolean unpacking) {
-        addressed = new PrivilegedAddressee(object, object.getClass(), method);
+        if (unpacking)
+            addressed = new PrivilegedAddressee(object, object.getClass(), method);
+        else
+            addressed = new Addressee(object, object.getClass(), method);
     }
 
     public void setAddressee(Object object, String method, boolean unpacking) throws NoSuchMethodException {
-        addressed = new PrivilegedAddressee(object, object.getClass(),
-                object.getClass().getMethod(method));
+        if (unpacking)
+            addressed = new PrivilegedAddressee(object, object.getClass(),
+                    object.getClass().getMethod(method));
+        else
+            addressed = new Addressee(object, object.getClass(),
+                    object.getClass().getMethod(method));
     }
-
 
     public void addAddressee(Object object, Method method, int postCode) {
         Addressed addressed = new PrivilegedAddressee(object, object.getClass(), method);
@@ -180,6 +199,7 @@ public class Post extends Thread implements Sender, Stored {
             addressedMap.put(postCode, new PrivilegedAddressee(object, object.getClass(), method));
         }
     }
+//endregion
 
     private void redirection(Transportable transportable) throws InvocationTargetException, IllegalAccessException {
         if (addressed != null)
@@ -199,10 +219,14 @@ public class Post extends Thread implements Sender, Stored {
     }
 
     public void stopRedirection() {
-        addressed = null;
+        redirected = false;
     }
 
-    public void stopRedirectionAll() {
+    public void startRedirection() {
+//        redirected = true;
+    }
+
+    public void clearRedirections() {
         addressed = null;
         addressedMap = null;
     }
@@ -243,5 +267,9 @@ public class Post extends Thread implements Sender, Stored {
             return null;
     }
 
-//    endregion
+    public boolean isRedirected() {
+        return redirected;
+    }
+
+    //    endregion
 }

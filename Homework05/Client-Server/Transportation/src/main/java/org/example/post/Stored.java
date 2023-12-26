@@ -1,4 +1,4 @@
-package org.example;
+package org.example.post;
 
 import org.example.packs.Transportable;
 

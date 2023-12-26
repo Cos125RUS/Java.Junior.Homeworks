@@ -8,11 +8,17 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 public class Addressee implements Addressed{
-    protected final Object object;
-    protected final Class aClass;
-    protected final Method method;
+    protected Object object;
+    protected Class aClass;
+    protected Method method;
 
     public Addressee(Object object, Class aClass, Method method) {
+        this.object = object;
+        this.aClass = aClass;
+        this.method = method;
+    }
+
+    public void setAddressee(Object object, Class aClass, Method method) {
         this.object = object;
         this.aClass = aClass;
         this.method = method;
@@ -21,5 +27,17 @@ public class Addressee implements Addressed{
     @Override
     public void take(Transportable send) throws InvocationTargetException, IllegalAccessException {
         method.invoke(aClass.cast(object), send);
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    public Class getaClass() {
+        return aClass;
+    }
+
+    public Method getMethod() {
+        return method;
     }
 }

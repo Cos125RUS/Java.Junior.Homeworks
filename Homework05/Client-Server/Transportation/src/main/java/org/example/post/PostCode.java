@@ -1,4 +1,4 @@
-package org.example;
+package org.example.post;
 
 public enum PostCode {
     DATA, MESSAGE, PRIVATE_MESSAGE, GROUP_MESSAGE, CONTACT, GROUP, CHAT, AUDIO, VIDEO, LINK, GEO_POSITION
