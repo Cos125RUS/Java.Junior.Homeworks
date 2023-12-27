@@ -84,7 +84,7 @@ public class Courier implements Taking {
     public void deliver(Serializable serializable) throws ClassNotFoundException, IOException {
         StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
         int postCode = getPostCode(stackTraceElements[2]);
-        Envelope envelope = new Envelope(postCode);
+        Envelope envelope = new Envelope(serializable, postCode);
         post.send(envelope);
     }
 

@@ -187,6 +187,10 @@ public class Post extends Thread implements Sender, Stored {
         return postman;
     }
 
+    public Courier getCourier() {
+        return new Courier(this);
+    }
+
     private void redirection(Transportable transportable) throws InvocationTargetException, IllegalAccessException {
         boolean destinationFound = false;
         for (Postman postman : postmenList) {
