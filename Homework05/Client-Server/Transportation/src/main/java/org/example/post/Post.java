@@ -4,6 +4,8 @@ import org.example.adresses.Addressed;
 import org.example.adresses.Addressee;
 import org.example.adresses.Addressing;
 import org.example.adresses.PrivilegedAddressee;
+import org.example.objects.Message;
+import org.example.packs.Envelope;
 import org.example.packs.Transportable;
 import org.example.packs.annotations.*;
 import org.example.packs.annotations.PostCode;
@@ -125,29 +127,35 @@ public class Post extends Thread implements Sender, Stored {
     }
 
     public void send(Object object) throws IOException {
-        Transportable transportable = () -> (Serializable) object;
-        send(transportable);
+        send(new Envelope((Serializable) object));
     }
 
     private void stamp(Transportable transportable) throws IllegalAccessException, UnknownHostException {
-        Arrays.stream(transportable.getClass().getDeclaredFields()).filter(field -> {
+        List<Field> list = Arrays.stream(transportable.getClass().getDeclaredFields()).filter(field -> {
             field.setAccessible(true);
             return !Arrays.stream(field.getAnnotations()).filter(
                             annotation -> annotation.annotationType().equals(LocalAddress.class))
                     .toList().isEmpty();
-        }).toList().get(0).set(transportable, InetAddress.getLocalHost());
+        }).toList();
+        if (!list.isEmpty())
+            list.get(0).set(transportable, InetAddress.getLocalHost());
     }
 
     @Override
     public <T extends Transportable> T get() {
-        return (T) awaitingQueue.peek();
+        return (T) awaitingQueue.poll();
+    }
+
+    public Object getAndOpen() {
+        Transportable transportable = get();
+        return transportable.getObject();
     }
 
     public <T extends Transportable> T[] getAll() {
         return (T[]) awaitingQueue.toArray();
     }
 
-    public boolean isAwaiting(){
+    public boolean isAwaiting() {
         return !awaitingQueue.isEmpty();
     }
 
@@ -161,6 +169,21 @@ public class Post extends Thread implements Sender, Stored {
     public Postman getPostman() {
         Postman postman = new Postman();
         redirected = true;
+        postmenList.add(postman);
+        return postman;
+    }
+
+    public Postman getPostman(Object object, Method method) {
+        Postman postman = new Postman(object, method);
+        redirected = true;
+        postmenList.add(postman);
+        return postman;
+    }
+
+    public Postman getPostman(Object object, String methodName) {
+        Postman postman = Postman.getPostman(object, methodName);
+        redirected = true;
+        postmenList.add(postman);
         return postman;
     }
 
@@ -173,9 +196,10 @@ public class Post extends Thread implements Sender, Stored {
         if (!destinationFound) {
             Integer postCode;
             if ((postCode = Postman.getPostCode(transportable)) != null) {
-                postBoxes.get(postCode).add(transportable);
-            }
-        } else awaitingQueue.add(transportable);
+                if (postBoxes.containsKey(postCode))
+                    postBoxes.get(postCode).add(transportable);
+            } else awaitingQueue.add(transportable);
+        }
     }
 
     public void stopRedirection() {

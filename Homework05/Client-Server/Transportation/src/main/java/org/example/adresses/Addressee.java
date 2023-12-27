@@ -12,6 +12,8 @@ public class Addressee implements Addressed{
     protected Class aClass;
     protected Method method;
 
+    public Addressee(){};
+
     public Addressee(Object object, Class aClass, Method method) {
         this.object = object;
         this.aClass = aClass;

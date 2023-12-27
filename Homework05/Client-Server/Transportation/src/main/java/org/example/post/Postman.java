@@ -33,6 +33,14 @@ public class Postman implements Delivering {
         uuid = UUID.randomUUID();
     }
 
+    public Postman(Object object, Method method) {
+        this(new Addressee(object, object.getClass(), method));
+    }
+
+    public Postman(Object object, String methodName) throws NoSuchMethodException {
+        this(new Addressee(object, object.getClass(), object.getClass().getMethod(methodName)));
+    }
+
     public void setAddressee(Object object, Method method) {
         defaultAddressed = new Addressee(object, object.getClass(), method);
     }
@@ -64,8 +72,7 @@ public class Postman implements Delivering {
     }
 
     public void addAddressee(Object object, String method, int postCode) throws NoSuchMethodException {
-        Addressed addressed = new Addressee(object, object.getClass(),
-                object.getClass().getMethod(method));
+        Addressed addressed = getAddressed(object, method);
         addressedMap.put(postCode, addressed);
     }
 
@@ -143,8 +150,8 @@ public class Postman implements Delivering {
 
     @Override
     public boolean newCorespondent(Transportable transportable) throws IllegalAccessException, InvocationTargetException {
-        Integer postCode;
-        if ((postCode = getPostCode(transportable)) != null) {
+        Integer postCode = getPostCode(transportable);
+        if (postCode > 0) {
             addressedMap.get(postCode).take(transportable);
             return true;
         } else if (defaultAddressed != null) {
@@ -155,12 +162,36 @@ public class Postman implements Delivering {
 
     public static Integer getPostCode(Transportable transportable) throws IllegalAccessException {
         Field[] declaredFields = transportable.getClass().getDeclaredFields();
-        List<Field> list = Arrays.stream(declaredFields).filter(it ->
-                it.isAnnotationPresent(PostCode.class)).toList();
+        List<Field> list = Arrays.stream(declaredFields).filter(it -> {
+            it.setAccessible(true);
+            return it.isAnnotationPresent(PostCode.class);
+        }).toList();
         if (list.isEmpty()) {
             return null;
         } else {
             return list.get(0).getInt(transportable);
         }
+    }
+
+    public static Postman getPostman(Object object, String methodName) {
+        Postman postman = new Postman();
+        for (Method method : object.getClass().getDeclaredMethods()) {
+            method.setAccessible(true);
+            if (method.getName().equals(methodName)) {
+                postman = new Postman(object, method);
+            }
+        }
+        return postman;
+    }
+
+    private Addressed getAddressed(Object object, String methodName) {
+        Addressee addressee = new Addressee();
+        for (Method method : object.getClass().getDeclaredMethods()) {
+            method.setAccessible(true);
+            if (method.getName().equals(methodName)) {
+                addressee = new Addressee(object, object.getClass(), method);
+            }
+        }
+        return addressee;
     }
 }

@@ -46,7 +46,7 @@ public class Envelope implements Packable, Serializable, Transportable {
         uuid = UUID.randomUUID();
     }
 
-    public <T extends Serializable> Envelope(String postType, T object) {
+    public <T extends Serializable> Envelope(T object, String postType) {
         this.postType = postType;
         uuid = UUID.randomUUID();
         pack(object);
@@ -54,7 +54,7 @@ public class Envelope implements Packable, Serializable, Transportable {
     }
 
 
-    public <T extends Serializable> Envelope(int postCode, T object) {
+    public <T extends Serializable> Envelope(T object, int postCode) {
         this.postCode = postCode;
         uuid = UUID.randomUUID();
         pack(object);
@@ -67,7 +67,7 @@ public class Envelope implements Packable, Serializable, Transportable {
         notNull = true;
     }
 
-    public <T extends Serializable> Envelope(InetAddress destinationAddress, String postType, T object) {
+    public <T extends Serializable> Envelope(T object, InetAddress destinationAddress, String postType) {
         this.destinationAddress = destinationAddress;
         this.postType = postType;
         uuid = UUID.randomUUID();
@@ -76,7 +76,7 @@ public class Envelope implements Packable, Serializable, Transportable {
     }
 
 
-    public <T extends Serializable> Envelope(InetAddress destinationAddress, int postCode, T object) {
+    public <T extends Serializable> Envelope(T object, int postCode, InetAddress destinationAddress) {
         this.destinationAddress = destinationAddress;
         this.postCode = postCode;
         uuid = UUID.randomUUID();
@@ -84,14 +84,14 @@ public class Envelope implements Packable, Serializable, Transportable {
         notNull = true;
     }
 
-    public <T extends Serializable> Envelope(InetAddress destinationAddress, T object) {
+    public <T extends Serializable> Envelope(T object, InetAddress destinationAddress) {
         this.destinationAddress = destinationAddress;
         uuid = UUID.randomUUID();
         pack(object);
         notNull = true;
     }
 
-    public <T extends Serializable> Envelope(InetAddress localAddress, InetAddress destinationAddress, String postType, T object) {
+    public <T extends Serializable> Envelope(T object, InetAddress localAddress, InetAddress destinationAddress, String postType) {
         this.destinationAddress = destinationAddress;
         this.localAddress = localAddress;
         this.postType = postType;
@@ -101,7 +101,7 @@ public class Envelope implements Packable, Serializable, Transportable {
     }
 
 
-    public <T extends Serializable> Envelope(InetAddress localAddress, InetAddress destinationAddress, int postCode, T object) {
+    public <T extends Serializable> Envelope(T object, int postCode, InetAddress localAddress, InetAddress destinationAddress) {
         this.destinationAddress = destinationAddress;
         this.localAddress = localAddress;
         this.postCode = postCode;
@@ -110,7 +110,7 @@ public class Envelope implements Packable, Serializable, Transportable {
         notNull = true;
     }
 
-    public <T extends Serializable> Envelope(InetAddress localAddress, InetAddress destinationAddress, T object) {
+    public <T extends Serializable> Envelope(T object, InetAddress localAddress, InetAddress destinationAddress) {
         this.destinationAddress = destinationAddress;
         this.localAddress = localAddress;
         uuid = UUID.randomUUID();

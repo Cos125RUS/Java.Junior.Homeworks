@@ -25,11 +25,19 @@ public class PostBox {
     }
 
     public Transportable getFirst() {
-        return mails.getFirst();
+        if (!mails.isEmpty())
+            return mails.pollFirst();
+        else return null;
     }
 
     public Transportable getLast() {
-        return mails.getLast();
+        if (!mails.isEmpty())
+            return mails.pollLast();
+        else return null;
+    }
+
+    public boolean isEmpty() {
+        return mails.isEmpty();
     }
 
     public Transportable[] toArray() {
